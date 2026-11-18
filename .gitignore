@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Test reports and artifacts
+coverage/
+playwright-report/
+test-results/
+
+# Operating system and editor files
+.DS_Store
+.vscode/

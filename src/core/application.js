@@ -1,8 +1,13 @@
-export function startApplication() {
-  console.log("--------------------------------");
-  console.log("          TESTNEXUS AI");
-  console.log("--------------------------------");
+import { logger } from "../utils/logger.js";
+import { env } from "../config/environment.js";
 
-  console.log("AI-Powered Intelligent Regression Testing Platform");
-  console.log("Application initialized successfully.");
+export function startApplication() {
+  logger.info("Starting TestNexus AI");
+
+  logger.info("Application configuration loaded", {
+    environment: env.environment,
+    port: env.port
+  });
+
+  logger.info("TestNexus AI initialized successfully");
 }
