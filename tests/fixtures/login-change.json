@@ -1,0 +1,15 @@
+{
+  "number": 12,
+  "title": "Add login validation",
+  "state": "open",
+  "changedFiles": [
+    {
+      "path": "src/auth/login.js",
+      "previousPath": null,
+      "status": "modified",
+      "additions": 10,
+      "deletions": 2,
+      "patch": "@@ -2,2 +2,3 @@ function login(user)\n const user = input;\n-return user;\n+if (!user) {\n+  throw new Error(\"missing user\");\n+}"
+    }
+  ]
+}
