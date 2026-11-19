@@ -27,5 +27,8 @@ export const env = Object.freeze({
   port,
   githubToken: process.env.GITHUB_TOKEN || "",
   githubOwner: process.env.GITHUB_OWNER || "",
-  githubRepo: process.env.GITHUB_REPO || ""
+  githubRepo: process.env.GITHUB_REPO || "",
+  aiApiKey: process.env.AI_API_KEY || "",
+  aiModel: process.env.AI_MODEL || "gpt-4o-mini",
+  aiBaseUrl: process.env.AI_BASE_URL || "https://api.openai.com/v1"
 });
