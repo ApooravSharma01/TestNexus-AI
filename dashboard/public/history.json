@@ -1,0 +1,748 @@
+{
+  "latest": {
+    "generatedAt": "2026-11-19T17:44:17.499Z",
+    "pullRequest": {
+      "number": 12,
+      "title": "Add login validation",
+      "state": "open"
+    },
+    "totals": {
+      "files": 1,
+      "additions": 10,
+      "deletions": 2,
+      "churn": 12
+    },
+    "changedFiles": [
+      {
+        "path": "src/auth/login.js",
+        "previousPath": null,
+        "status": "modified",
+        "category": "source",
+        "additions": 10,
+        "deletions": 2,
+        "hunks": [
+          {
+            "heading": "function login(user)",
+            "addedLines": [
+              "if (!user) {",
+              "  throw new Error(\"missing user\");",
+              "}"
+            ],
+            "removedLines": [
+              "return user;"
+            ]
+          }
+        ]
+      }
+    ],
+    "risk": {
+      "score": 42,
+      "level": "medium",
+      "reasons": [
+        "A critical feature changed (+40).",
+        "Change size added 2 points."
+      ],
+      "factors": [
+        {
+          "label": "Critical feature changed",
+          "points": 40
+        },
+        {
+          "label": "Change size",
+          "points": 2
+        }
+      ]
+    },
+    "impact": {
+      "features": [
+        {
+          "id": "authentication",
+          "name": "Authentication",
+          "critical": true,
+          "files": [
+            "src/auth/login.js"
+          ]
+        }
+      ],
+      "unmatchedSourceFiles": [],
+      "documentationOnly": false
+    },
+    "selectionReason": "Tests were selected for the impacted features.",
+    "intelligence": {
+      "mode": "deterministic",
+      "explanation": "Risk is medium (42/100). A critical feature changed (+40). Change size added 2 points. Impacted features: Authentication. Selected 2 tests: AUTH-LOGIN-001, AUTH-LOGIN-002.",
+      "addedTestIds": []
+    },
+    "missedCriticalTests": [],
+    "comparison": {
+      "fullRegressionCount": 4,
+      "deterministicCount": 2,
+      "intelligentCount": 2,
+      "testsSaved": 2
+    },
+    "rejectedTestIds": [],
+    "selectedTests": [
+      {
+        "id": "AUTH-LOGIN-001",
+        "title": "user can log in with valid credentials",
+        "featureId": "authentication",
+        "critical": true,
+        "file": "tests/e2e/auth.spec.js"
+      },
+      {
+        "id": "AUTH-LOGIN-002",
+        "title": "login rejects an empty password",
+        "featureId": "authentication",
+        "critical": false,
+        "file": "tests/e2e/auth.spec.js"
+      }
+    ],
+    "skippedTests": [
+      {
+        "id": "CHECKOUT-001",
+        "title": "user can place an order",
+        "featureId": "checkout",
+        "critical": true
+      },
+      {
+        "id": "CATALOG-001",
+        "title": "catalog shows a product",
+        "featureId": "catalog",
+        "critical": false
+      }
+    ],
+    "execution": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 267,
+      "results": [
+        {
+          "title": "user can log in with valid credentials",
+          "status": "passed",
+          "durationMs": 152,
+          "error": ""
+        },
+        {
+          "title": "login rejects an empty password",
+          "status": "passed",
+          "durationMs": 115,
+          "error": ""
+        }
+      ]
+    },
+    "diagnosis": [],
+    "run": {
+      "command": "npm run analyze -- --execute",
+      "source": "tests/fixtures/login-change.json"
+    }
+  },
+  "runs": [
+    {
+      "name": "login change",
+      "metrics": {
+        "precision": 1,
+        "recall": 1,
+        "criticalRecall": 1,
+        "falseNegatives": []
+      },
+      "testsSaved": 2,
+      "report": {
+        "generatedAt": "2026-11-19T17:44:17.690Z",
+        "pullRequest": {
+          "number": 12,
+          "title": "Add login validation",
+          "state": "open"
+        },
+        "totals": {
+          "files": 1,
+          "additions": 10,
+          "deletions": 2,
+          "churn": 12
+        },
+        "changedFiles": [
+          {
+            "path": "src/auth/login.js",
+            "previousPath": null,
+            "status": "modified",
+            "category": "source",
+            "additions": 10,
+            "deletions": 2,
+            "hunks": []
+          }
+        ],
+        "risk": {
+          "score": 42,
+          "level": "medium",
+          "reasons": [
+            "A critical feature changed (+40).",
+            "Change size added 2 points."
+          ],
+          "factors": [
+            {
+              "label": "Critical feature changed",
+              "points": 40
+            },
+            {
+              "label": "Change size",
+              "points": 2
+            }
+          ]
+        },
+        "impact": {
+          "features": [
+            {
+              "id": "authentication",
+              "name": "Authentication",
+              "critical": true,
+              "files": [
+                "src/auth/login.js"
+              ]
+            }
+          ],
+          "unmatchedSourceFiles": [],
+          "documentationOnly": false
+        },
+        "selectionReason": "Tests were selected for the impacted features.",
+        "intelligence": {
+          "mode": "deterministic",
+          "explanation": "Risk is medium (42/100). A critical feature changed (+40). Change size added 2 points. Impacted features: Authentication. Selected 2 tests: AUTH-LOGIN-001, AUTH-LOGIN-002.",
+          "addedTestIds": []
+        },
+        "missedCriticalTests": [],
+        "comparison": {
+          "fullRegressionCount": 4,
+          "deterministicCount": 2,
+          "intelligentCount": 2,
+          "testsSaved": 2
+        },
+        "rejectedTestIds": [],
+        "selectedTests": [
+          {
+            "id": "AUTH-LOGIN-001",
+            "title": "user can log in with valid credentials",
+            "featureId": "authentication",
+            "critical": true,
+            "file": "tests/e2e/auth.spec.js"
+          },
+          {
+            "id": "AUTH-LOGIN-002",
+            "title": "login rejects an empty password",
+            "featureId": "authentication",
+            "critical": false,
+            "file": "tests/e2e/auth.spec.js"
+          }
+        ],
+        "skippedTests": [
+          {
+            "id": "CHECKOUT-001",
+            "title": "user can place an order",
+            "featureId": "checkout",
+            "critical": true
+          },
+          {
+            "id": "CATALOG-001",
+            "title": "catalog shows a product",
+            "featureId": "catalog",
+            "critical": false
+          }
+        ],
+        "execution": null,
+        "diagnosis": [],
+        "run": {
+          "command": "npm run evaluate",
+          "source": "labeled case \"login change\""
+        }
+      }
+    },
+    {
+      "name": "readme only",
+      "metrics": {
+        "precision": 1,
+        "recall": 1,
+        "criticalRecall": 1,
+        "falseNegatives": []
+      },
+      "testsSaved": 4,
+      "report": {
+        "generatedAt": "2026-11-19T17:44:17.691Z",
+        "pullRequest": {
+          "number": 13,
+          "title": "Update readme",
+          "state": "open"
+        },
+        "totals": {
+          "files": 1,
+          "additions": 2,
+          "deletions": 1,
+          "churn": 3
+        },
+        "changedFiles": [
+          {
+            "path": "README.md",
+            "previousPath": null,
+            "status": "modified",
+            "category": "documentation",
+            "additions": 2,
+            "deletions": 1,
+            "hunks": []
+          }
+        ],
+        "risk": {
+          "score": 0,
+          "level": "low",
+          "reasons": [
+            "Only documentation files changed."
+          ],
+          "factors": []
+        },
+        "impact": {
+          "features": [],
+          "unmatchedSourceFiles": [],
+          "documentationOnly": true
+        },
+        "selectionReason": "No mapped feature changed, so no regression tests were selected.",
+        "intelligence": {
+          "mode": "deterministic",
+          "explanation": "Risk is low (0/100). Only documentation files changed. No mapped feature was impacted. No regression tests were selected.",
+          "addedTestIds": []
+        },
+        "missedCriticalTests": [],
+        "comparison": {
+          "fullRegressionCount": 4,
+          "deterministicCount": 0,
+          "intelligentCount": 0,
+          "testsSaved": 4
+        },
+        "rejectedTestIds": [],
+        "selectedTests": [],
+        "skippedTests": [
+          {
+            "id": "AUTH-LOGIN-001",
+            "title": "user can log in with valid credentials",
+            "featureId": "authentication",
+            "critical": true
+          },
+          {
+            "id": "AUTH-LOGIN-002",
+            "title": "login rejects an empty password",
+            "featureId": "authentication",
+            "critical": false
+          },
+          {
+            "id": "CHECKOUT-001",
+            "title": "user can place an order",
+            "featureId": "checkout",
+            "critical": true
+          },
+          {
+            "id": "CATALOG-001",
+            "title": "catalog shows a product",
+            "featureId": "catalog",
+            "critical": false
+          }
+        ],
+        "execution": null,
+        "diagnosis": [],
+        "run": {
+          "command": "npm run evaluate",
+          "source": "labeled case \"readme only\""
+        }
+      }
+    },
+    {
+      "name": "checkout change",
+      "metrics": {
+        "precision": 1,
+        "recall": 1,
+        "criticalRecall": 1,
+        "falseNegatives": []
+      },
+      "testsSaved": 3,
+      "report": {
+        "generatedAt": "2026-11-19T17:44:17.691Z",
+        "pullRequest": {
+          "number": 14,
+          "title": "Update checkout",
+          "state": "open"
+        },
+        "totals": {
+          "files": 1,
+          "additions": 4,
+          "deletions": 1,
+          "churn": 5
+        },
+        "changedFiles": [
+          {
+            "path": "src/checkout/order.js",
+            "previousPath": null,
+            "status": "modified",
+            "category": "source",
+            "additions": 4,
+            "deletions": 1,
+            "hunks": []
+          }
+        ],
+        "risk": {
+          "score": 41,
+          "level": "medium",
+          "reasons": [
+            "A critical feature changed (+40).",
+            "Change size added 1 points."
+          ],
+          "factors": [
+            {
+              "label": "Critical feature changed",
+              "points": 40
+            },
+            {
+              "label": "Change size",
+              "points": 1
+            }
+          ]
+        },
+        "impact": {
+          "features": [
+            {
+              "id": "checkout",
+              "name": "Checkout",
+              "critical": true,
+              "files": [
+                "src/checkout/order.js"
+              ]
+            }
+          ],
+          "unmatchedSourceFiles": [],
+          "documentationOnly": false
+        },
+        "selectionReason": "Tests were selected for the impacted features.",
+        "intelligence": {
+          "mode": "deterministic",
+          "explanation": "Risk is medium (41/100). A critical feature changed (+40). Change size added 1 points. Impacted features: Checkout. Selected 1 tests: CHECKOUT-001.",
+          "addedTestIds": []
+        },
+        "missedCriticalTests": [],
+        "comparison": {
+          "fullRegressionCount": 4,
+          "deterministicCount": 1,
+          "intelligentCount": 1,
+          "testsSaved": 3
+        },
+        "rejectedTestIds": [],
+        "selectedTests": [
+          {
+            "id": "CHECKOUT-001",
+            "title": "user can place an order",
+            "featureId": "checkout",
+            "critical": true,
+            "file": "tests/e2e/checkout.spec.js"
+          }
+        ],
+        "skippedTests": [
+          {
+            "id": "AUTH-LOGIN-001",
+            "title": "user can log in with valid credentials",
+            "featureId": "authentication",
+            "critical": true
+          },
+          {
+            "id": "AUTH-LOGIN-002",
+            "title": "login rejects an empty password",
+            "featureId": "authentication",
+            "critical": false
+          },
+          {
+            "id": "CATALOG-001",
+            "title": "catalog shows a product",
+            "featureId": "catalog",
+            "critical": false
+          }
+        ],
+        "execution": null,
+        "diagnosis": [],
+        "run": {
+          "command": "npm run evaluate",
+          "source": "labeled case \"checkout change\""
+        }
+      }
+    },
+    {
+      "name": "catalog change",
+      "metrics": {
+        "precision": 1,
+        "recall": 1,
+        "criticalRecall": 1,
+        "falseNegatives": []
+      },
+      "testsSaved": 3,
+      "report": {
+        "generatedAt": "2026-11-19T17:44:17.691Z",
+        "pullRequest": {
+          "number": 15,
+          "title": "Update catalog",
+          "state": "open"
+        },
+        "totals": {
+          "files": 1,
+          "additions": 3,
+          "deletions": 0,
+          "churn": 3
+        },
+        "changedFiles": [
+          {
+            "path": "src/catalog/list.js",
+            "previousPath": null,
+            "status": "modified",
+            "category": "source",
+            "additions": 3,
+            "deletions": 0,
+            "hunks": []
+          }
+        ],
+        "risk": {
+          "score": 20,
+          "level": "low",
+          "reasons": [
+            "A product feature changed (+20)."
+          ],
+          "factors": [
+            {
+              "label": "Product feature changed",
+              "points": 20
+            }
+          ]
+        },
+        "impact": {
+          "features": [
+            {
+              "id": "catalog",
+              "name": "Product catalog",
+              "critical": false,
+              "files": [
+                "src/catalog/list.js"
+              ]
+            }
+          ],
+          "unmatchedSourceFiles": [],
+          "documentationOnly": false
+        },
+        "selectionReason": "Tests were selected for the impacted features.",
+        "intelligence": {
+          "mode": "deterministic",
+          "explanation": "Risk is low (20/100). A product feature changed (+20). Impacted features: Product catalog. Selected 1 tests: CATALOG-001.",
+          "addedTestIds": []
+        },
+        "missedCriticalTests": [],
+        "comparison": {
+          "fullRegressionCount": 4,
+          "deterministicCount": 1,
+          "intelligentCount": 1,
+          "testsSaved": 3
+        },
+        "rejectedTestIds": [],
+        "selectedTests": [
+          {
+            "id": "CATALOG-001",
+            "title": "catalog shows a product",
+            "featureId": "catalog",
+            "critical": false,
+            "file": "tests/e2e/catalog.spec.js"
+          }
+        ],
+        "skippedTests": [
+          {
+            "id": "AUTH-LOGIN-001",
+            "title": "user can log in with valid credentials",
+            "featureId": "authentication",
+            "critical": true
+          },
+          {
+            "id": "AUTH-LOGIN-002",
+            "title": "login rejects an empty password",
+            "featureId": "authentication",
+            "critical": false
+          },
+          {
+            "id": "CHECKOUT-001",
+            "title": "user can place an order",
+            "featureId": "checkout",
+            "critical": true
+          }
+        ],
+        "execution": null,
+        "diagnosis": [],
+        "run": {
+          "command": "npm run evaluate",
+          "source": "labeled case \"catalog change\""
+        }
+      }
+    },
+    {
+      "name": "unmapped source",
+      "metrics": {
+        "precision": 1,
+        "recall": 1,
+        "criticalRecall": 1,
+        "falseNegatives": []
+      },
+      "testsSaved": 2,
+      "report": {
+        "generatedAt": "2026-11-19T17:44:17.692Z",
+        "pullRequest": {
+          "number": 16,
+          "title": "Add billing tax",
+          "state": "open"
+        },
+        "totals": {
+          "files": 1,
+          "additions": 20,
+          "deletions": 0,
+          "churn": 20
+        },
+        "changedFiles": [
+          {
+            "path": "src/billing/tax.js",
+            "previousPath": null,
+            "status": "added",
+            "category": "source",
+            "additions": 20,
+            "deletions": 0,
+            "hunks": []
+          }
+        ],
+        "risk": {
+          "score": 29,
+          "level": "medium",
+          "reasons": [
+            "A source file is outside the feature map (+25).",
+            "Change size added 4 points."
+          ],
+          "factors": [
+            {
+              "label": "Source outside feature map",
+              "points": 25
+            },
+            {
+              "label": "Change size",
+              "points": 4
+            }
+          ]
+        },
+        "impact": {
+          "features": [],
+          "unmatchedSourceFiles": [
+            "src/billing/tax.js"
+          ],
+          "documentationOnly": false
+        },
+        "selectionReason": "A source file is outside the feature map, so every critical test is included.",
+        "intelligence": {
+          "mode": "deterministic",
+          "explanation": "Risk is medium (29/100). A source file is outside the feature map (+25). Change size added 4 points. No mapped feature was impacted. Selected 2 tests: AUTH-LOGIN-001, CHECKOUT-001.",
+          "addedTestIds": []
+        },
+        "missedCriticalTests": [],
+        "comparison": {
+          "fullRegressionCount": 4,
+          "deterministicCount": 2,
+          "intelligentCount": 2,
+          "testsSaved": 2
+        },
+        "rejectedTestIds": [],
+        "selectedTests": [
+          {
+            "id": "AUTH-LOGIN-001",
+            "title": "user can log in with valid credentials",
+            "featureId": "authentication",
+            "critical": true,
+            "file": "tests/e2e/auth.spec.js"
+          },
+          {
+            "id": "CHECKOUT-001",
+            "title": "user can place an order",
+            "featureId": "checkout",
+            "critical": true,
+            "file": "tests/e2e/checkout.spec.js"
+          }
+        ],
+        "skippedTests": [
+          {
+            "id": "AUTH-LOGIN-002",
+            "title": "login rejects an empty password",
+            "featureId": "authentication",
+            "critical": false
+          },
+          {
+            "id": "CATALOG-001",
+            "title": "catalog shows a product",
+            "featureId": "catalog",
+            "critical": false
+          }
+        ],
+        "execution": null,
+        "diagnosis": [],
+        "run": {
+          "command": "npm run evaluate",
+          "source": "labeled case \"unmapped source\""
+        }
+      }
+    }
+  ],
+  "evaluation": {
+    "averagePrecision": 1,
+    "averageRecall": 1,
+    "averageCriticalRecall": 1,
+    "cases": [
+      {
+        "name": "login change",
+        "metrics": {
+          "precision": 1,
+          "recall": 1,
+          "criticalRecall": 1,
+          "falseNegatives": []
+        },
+        "testsSaved": 2
+      },
+      {
+        "name": "readme only",
+        "metrics": {
+          "precision": 1,
+          "recall": 1,
+          "criticalRecall": 1,
+          "falseNegatives": []
+        },
+        "testsSaved": 4
+      },
+      {
+        "name": "checkout change",
+        "metrics": {
+          "precision": 1,
+          "recall": 1,
+          "criticalRecall": 1,
+          "falseNegatives": []
+        },
+        "testsSaved": 3
+      },
+      {
+        "name": "catalog change",
+        "metrics": {
+          "precision": 1,
+          "recall": 1,
+          "criticalRecall": 1,
+          "falseNegatives": []
+        },
+        "testsSaved": 3
+      },
+      {
+        "name": "unmapped source",
+        "metrics": {
+          "precision": 1,
+          "recall": 1,
+          "criticalRecall": 1,
+          "falseNegatives": []
+        },
+        "testsSaved": 2
+      }
+    ]
+  }
+}
