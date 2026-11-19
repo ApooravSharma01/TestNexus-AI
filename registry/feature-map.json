@@ -1,0 +1,20 @@
+[
+  {
+    "id": "authentication",
+    "name": "Authentication",
+    "critical": true,
+    "paths": ["src/auth/"]
+  },
+  {
+    "id": "checkout",
+    "name": "Checkout",
+    "critical": true,
+    "paths": ["src/checkout/"]
+  },
+  {
+    "id": "catalog",
+    "name": "Product catalog",
+    "critical": false,
+    "paths": ["src/catalog/"]
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "AUTH-LOGIN-001",
+    "title": "user can log in with valid credentials",
+    "featureId": "authentication",
+    "file": "tests/e2e/auth.spec.js",
+    "critical": true
+  },
+  {
+    "id": "AUTH-LOGIN-002",
+    "title": "login rejects an empty password",
+    "featureId": "authentication",
+    "file": "tests/e2e/auth.spec.js",
+    "critical": false
+  },
+  {
+    "id": "CHECKOUT-001",
+    "title": "user can place an order",
+    "featureId": "checkout",
+    "file": "tests/e2e/checkout.spec.js",
+    "critical": true
+  },
+  {
+    "id": "CATALOG-001",
+    "title": "catalog shows a product",
+    "featureId": "catalog",
+    "file": "tests/e2e/catalog.spec.js",
+    "critical": false
+  }
+]
