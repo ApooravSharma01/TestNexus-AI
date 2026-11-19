@@ -24,5 +24,8 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) {
 export const env = Object.freeze({
   environment,
   logLevel,
-  port
+  port,
+  githubToken: process.env.GITHUB_TOKEN || "",
+  githubOwner: process.env.GITHUB_OWNER || "",
+  githubRepo: process.env.GITHUB_REPO || ""
 });

@@ -9,12 +9,14 @@
     "start": "node src/app.js",
     "dev": "node --watch src/app.js",
     "test": "node --test",
+    "inspect-pr": "node src/commands/inspect-pull-request.js",
     "check": "find src tests -name \"*.js\" -print0 | xargs -0 -n1 node --check"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.1",
     "dotenv": "^18.0.10"
   }
 }
