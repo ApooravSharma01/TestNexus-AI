@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Shop demo</title>
+  </head>
+  <body>
+    <h1>Shop</h1>
+    <section>
+      <h2>Login</h2>
+      <input id="username" />
+      <input id="password" type="password" />
+      <button id="login" type="button">Log in</button>
+      <p id="message"></p>
+    </section>
+    <section>
+      <h2>Catalog</h2>
+      <p id="product">Notebook</p>
+    </section>
+    <section>
+      <h2>Checkout</h2>
+      <button id="checkout" type="button">Place order</button>
+      <p id="order"></p>
+    </section>
+    <script>
+      document.querySelector("#login").addEventListener("click", () => {
+        const password = document.querySelector("#password").value;
+        const message = document.querySelector("#message");
+        message.textContent = password ? "Welcome" : "Password is required";
+      });
+
+      document.querySelector("#checkout").addEventListener("click", () => {
+        document.querySelector("#order").textContent = "Order placed";
+      });
+    </script>
+  </body>
+</html>

@@ -10,6 +10,10 @@
     "dev": "node --watch src/app.js",
     "test": "node --test",
     "inspect-pr": "node src/commands/inspect-pull-request.js",
+    "analyze": "node src/commands/analyze.js",
+    "evaluate": "node src/commands/evaluate.js",
+    "dashboard:sync": "node src/commands/sync-dashboard.js",
+    "test:e2e": "playwright test",
     "check": "find src tests -name \"*.js\" -print0 | xargs -0 -n1 node --check"
   },
   "engines": {
@@ -18,5 +22,8 @@
   "dependencies": {
     "@octokit/rest": "^22.0.1",
     "dotenv": "^18.0.10"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
   }
 }
