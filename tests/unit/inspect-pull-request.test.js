@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 
 import { inspectPullRequest } from "../../src/commands/inspect-pull-request.js";
 
-test("should return the mapped pull request summary", async () => {
-  const summary = await inspectPullRequest(12, {
+test("should analyze the pull request returned by GitHub", async () => {
+  const analysis = await inspectPullRequest(12, {
     service: {
       getPullRequestWithFiles: async (pullNumber) => ({
         number: pullNumber,
@@ -16,13 +16,16 @@ test("should return the mapped pull request summary", async () => {
             previousPath: null,
             status: "modified",
             additions: 10,
-            deletions: 2
+            deletions: 2,
+            patch: null
           }
         ]
       })
     }
   });
 
-  assert.equal(summary.number, 12);
-  assert.equal(summary.changedFiles[0].path, "src/auth/login.js");
+  assert.equal(analysis.number, 12);
+  assert.equal(analysis.files[0].path, "src/auth/login.js");
+  assert.equal(analysis.files[0].category, "source");
+  assert.equal(analysis.signals.sourceChanged, true);
 });

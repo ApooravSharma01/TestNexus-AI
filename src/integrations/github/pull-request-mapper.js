@@ -8,7 +8,8 @@ export function mapPullRequest({ pullRequest, changedFiles }) {
       previousPath: file.previous_filename || null,
       status: file.status,
       additions: file.additions,
-      deletions: file.deletions
+      deletions: file.deletions,
+      patch: file.patch || null
     }))
   };
 }

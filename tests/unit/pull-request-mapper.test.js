@@ -40,14 +40,16 @@ test("should map a GitHub pull request into a TestNexus change summary", () => {
         previousPath: null,
         status: "modified",
         additions: 10,
-        deletions: 2
+        deletions: 2,
+        patch: "@@ -1 +1 @@"
       },
       {
         path: "src/auth/login-form.js",
         previousPath: "src/auth/form.js",
         status: "renamed",
         additions: 0,
-        deletions: 0
+        deletions: 0,
+        patch: null
       }
     ]
   });

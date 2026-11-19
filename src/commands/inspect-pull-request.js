@@ -1,12 +1,14 @@
 import { pathToFileURL } from "node:url";
 
+import { analyzePullRequest } from "../analyzers/change-analyzer.js";
 import { createPullRequestService } from "../integrations/github/pull-request-service.js";
 import { handleError } from "../utils/error-handler.js";
 import { logger } from "../utils/logger.js";
 
 export async function inspectPullRequest(pullNumber, dependencies = {}) {
   const service = dependencies.service || createPullRequestService();
-  return service.getPullRequestWithFiles(pullNumber);
+  const summary = await service.getPullRequestWithFiles(pullNumber);
+  return analyzePullRequest(summary);
 }
 
 function isExecutedDirectly() {
@@ -24,7 +26,7 @@ if (isExecutedDirectly()) {
 
   try {
     const summary = await inspectPullRequest(pullNumber);
-    logger.info("Pull request change summary", summary);
+    logger.info("Pull request change analysis", summary);
   } catch (error) {
     console.error(JSON.stringify(handleError(error)));
     process.exitCode = 1;
