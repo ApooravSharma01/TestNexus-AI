@@ -1,45 +1,47 @@
 {
-  "generatedAt": "2026-11-19T17:44:17.499Z",
+  "generatedAt": "2026-11-19T17:56:20.346Z",
   "pullRequest": {
-    "number": 12,
-    "title": "Add login validation",
+    "number": 1,
+    "title": "Reject login when the user is missing",
     "state": "open"
   },
   "totals": {
     "files": 1,
-    "additions": 10,
-    "deletions": 2,
-    "churn": 12
+    "additions": 7,
+    "deletions": 0,
+    "churn": 7
   },
   "changedFiles": [
     {
       "path": "src/auth/login.js",
       "previousPath": null,
-      "status": "modified",
+      "status": "added",
       "category": "source",
-      "additions": 10,
-      "deletions": 2,
+      "additions": 7,
+      "deletions": 0,
       "hunks": [
         {
-          "heading": "function login(user)",
+          "heading": "",
           "addedLines": [
-            "if (!user) {",
-            "  throw new Error(\"missing user\");",
+            "export function login(user) {",
+            "  if (!user) {",
+            "    throw new Error(\"missing user\");",
+            "  }",
+            "",
+            "  return user;",
             "}"
           ],
-          "removedLines": [
-            "return user;"
-          ]
+          "removedLines": []
         }
       ]
     }
   ],
   "risk": {
-    "score": 42,
+    "score": 41,
     "level": "medium",
     "reasons": [
       "A critical feature changed (+40).",
-      "Change size added 2 points."
+      "Change size added 1 points."
     ],
     "factors": [
       {
@@ -48,7 +50,7 @@
       },
       {
         "label": "Change size",
-        "points": 2
+        "points": 1
       }
     ]
   },
@@ -69,7 +71,7 @@
   "selectionReason": "Tests were selected for the impacted features.",
   "intelligence": {
     "mode": "deterministic",
-    "explanation": "Risk is medium (42/100). A critical feature changed (+40). Change size added 2 points. Impacted features: Authentication. Selected 2 tests: AUTH-LOGIN-001, AUTH-LOGIN-002.",
+    "explanation": "Risk is medium (41/100). A critical feature changed (+40). Change size added 1 points. Impacted features: Authentication. Selected 2 tests: AUTH-LOGIN-001, AUTH-LOGIN-002.",
     "addedTestIds": []
   },
   "missedCriticalTests": [],
@@ -114,25 +116,25 @@
     "passed": 2,
     "failed": 0,
     "skipped": 0,
-    "durationMs": 267,
+    "durationMs": 493,
     "results": [
       {
         "title": "user can log in with valid credentials",
         "status": "passed",
-        "durationMs": 152,
+        "durationMs": 255,
         "error": ""
       },
       {
         "title": "login rejects an empty password",
         "status": "passed",
-        "durationMs": 115,
+        "durationMs": 238,
         "error": ""
       }
     ]
   },
   "diagnosis": [],
   "run": {
-    "command": "npm run analyze -- --execute",
-    "source": "tests/fixtures/login-change.json"
+    "command": "npm run analyze -- --pr 1 --execute",
+    "source": "GitHub pull request #1"
   }
 }
