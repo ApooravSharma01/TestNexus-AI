@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sale-order-regression",
+    "label": "Sale order regression",
+    "description": "Full UI, API and database checks for creating a sale order in OpenOMS, including the negative cases.",
+    "repository": { "owner": "ApooravSharma01", "name": "openoms" },
+    "workflow": "order-creation-e2e.yml",
+    "ref": "feat/e2e-stocktake-lifecycle",
+    "inputs": { "suite": "sale-order-regression", "grep": "@regression" },
+    "resultsArtifact": "playwright-results"
+  },
+  {
+    "id": "sale-order-smoke",
+    "label": "Sale order smoke",
+    "description": "The quick check: one happy path through UI, API and database plus the key validation rule.",
+    "repository": { "owner": "ApooravSharma01", "name": "openoms" },
+    "workflow": "order-creation-e2e.yml",
+    "ref": "feat/e2e-stocktake-lifecycle",
+    "inputs": { "suite": "sale-order-smoke", "grep": "@smoke" },
+    "resultsArtifact": "playwright-results"
+  },
+  {
+    "id": "sale-order-api",
+    "label": "Sale order API",
+    "description": "API-only checks: login, reading orders, and rejecting calls without authentication. No browser needed.",
+    "repository": { "owner": "ApooravSharma01", "name": "openoms" },
+    "workflow": "order-creation-e2e.yml",
+    "ref": "feat/e2e-stocktake-lifecycle",
+    "inputs": { "suite": "sale-order-api", "grep": "@api" },
+    "resultsArtifact": "playwright-results"
+  }
+]

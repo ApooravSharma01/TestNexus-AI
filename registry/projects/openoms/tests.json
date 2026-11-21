@@ -1,0 +1,58 @@
+[
+  {
+    "id": "SALE-ORDER-001",
+    "title": "creates an order through UI and validates API + DB persistence @smoke @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/order-creation.spec.js",
+    "critical": true
+  },
+  {
+    "id": "SALE-ORDER-002",
+    "title": "creates a basic order using Page Object Model @smoke @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/pom-smoke.spec.js",
+    "critical": false
+  },
+  {
+    "id": "SALE-ORDER-003",
+    "title": "creates order with multiple valid items @smoke @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/order-creation-negative.spec.js",
+    "critical": false
+  },
+  {
+    "id": "SALE-ORDER-004",
+    "title": "rejects order creation when customer name is missing @smoke @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/order-creation-negative.spec.js",
+    "critical": true
+  },
+  {
+    "id": "SALE-ORDER-005",
+    "title": "prevents submission when order item details are missing @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/order-creation-negative.spec.js",
+    "critical": false
+  },
+  {
+    "id": "SALE-ORDER-006",
+    "title": "validates minimum quantity on order item @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/order-creation-negative.spec.js",
+    "critical": false
+  },
+  {
+    "id": "SALE-ORDER-007",
+    "title": "authenticates and reads orders through API without UI @api @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/api-order.spec.js",
+    "critical": true
+  },
+  {
+    "id": "SALE-ORDER-008",
+    "title": "rejects protected orders endpoint without authentication @api @regression",
+    "featureId": "sale-order",
+    "file": "qa-automation/order-creation/tests/api-order.spec.js",
+    "critical": true
+  }
+]
