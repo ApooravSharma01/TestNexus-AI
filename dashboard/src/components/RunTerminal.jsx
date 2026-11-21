@@ -81,23 +81,26 @@ function localLines(report) {
   return { command, lines, note };
 }
 
-function actionsLines(report) {
-  const command = `npm run analyze -- --pr \${{ github.event.pull_request.number }} --execute`;
+function actionsLines() {
+  const command = "npm run analyze -- --project openoms --repo ApooravSharma01/openoms --pr <number>";
   const lines = [
-    line("# .github/workflows/ci.yml", "muted"),
-    line("- name: Intelligent regression", "command"),
-    line("  if: github.event_name == 'pull_request'"),
+    line("# ApooravSharma01/openoms/.github/workflows/order-creation-e2e.yml", "muted"),
+    line("- name: Analyze the pull request", "command"),
     line("  run: |"),
-    line(`    ${command}`),
+    line("    npm run analyze -- --project openoms \\"),
+    line("      --repo ${{ github.repository }} --pr $PR_NUMBER"),
     line(""),
-    line(`# would analyze pull request #${report.pullRequest.number}`, "muted"),
+    line("- name: Run only the selected tests", "command"),
+    line("  run: npx playwright test --grep \"$SELECTED\""),
+    line(""),
+    line("# The same workflow also starts from the Run suite buttons.", "muted"),
     line("$", "prompt")
   ];
 
   return {
     command,
     lines,
-    note: "GitHub Actions is not connected. This is the step to add to the workflow."
+    note: "Connected on ApooravSharma01/openoms. TestNexus picks the tests for each pull request, then Playwright runs only those."
   };
 }
 

@@ -65,3 +65,33 @@ A documentation-only change scores 0. The level is low below 25, medium from 25 
 - Critical recall: relevant critical tests that were selected.
 
 On the current labeled cases the three averages are 1. An empty selection on a documentation change counts as a perfect score because there was nothing relevant to run.
+
+## Running on a real product (OpenOMS)
+
+TestNexus is the brain, GitHub Actions is the muscle, the dashboard is the control room. The product's full stack (database, API, UI) only exists inside its own pipeline, so the tests run there.
+
+```
+Pull request on OpenOMS
+  -> workflow "select" job: npm run analyze -- --project openoms --pr N
+  -> TestNexus picks the sale-order tests (writes a report and a grep pattern)
+  -> workflow "order-creation-e2e" job starts Postgres, Redis, API, UI
+  -> Playwright runs only the selected tests (--grep)
+  -> report and results are uploaded as artifacts
+```
+
+- A product is a folder in `registry/projects/<id>/` with `project.json`, `feature-map.json` and `tests.json`.
+- If TestNexus fails in the pipeline, the full suite still runs. Skipping tests only happens when TestNexus said so.
+- `--execute` is refused for these projects because the stack is not on your laptop.
+
+### Run a suite from the dashboard
+
+Suites are listed in `registry/suites.json`. Each one points at a workflow, a branch and a Playwright filter.
+
+```bash
+npm run suites:server        # terminal 1, needs GITHUB_TOKEN with repo and workflow access
+cd dashboard && npm run dev  # terminal 2, then open http://127.0.0.1:5173
+npm run suite -- --list      # same suites from the command line
+npm run suite -- sale-order-regression
+```
+
+The token stays in the local server, which listens on 127.0.0.1 only and refuses requests from other websites. The browser never sees it. A suite cannot be started twice at once, and the dashboard can only start suites that are in the registry.
