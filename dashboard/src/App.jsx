@@ -28,6 +28,13 @@ const TABS = ["overview", "suites", "pull-requests", "analysis"];
 
 function currentTab() {
   const hash = window.location.hash.slice(1);
+
+  if (!hash) {
+    // Replace so the address bar shows #overview without adding a history entry.
+    window.history.replaceState(null, "", "#overview");
+    return "overview";
+  }
+
   return TABS.includes(hash) ? hash : "overview";
 }
 
@@ -45,7 +52,12 @@ function useHashTab() {
   }, []);
 
   const select = useCallback((next) => {
-    window.location.hash = next;
+    // Always update React state. Setting the same hash again does not fire hashchange,
+    // so a click on the already-selected URL would otherwise do nothing.
+    setTab(next);
+    if (window.location.hash.slice(1) !== next) {
+      window.location.hash = next;
+    }
   }, []);
 
   return [tab, select];
