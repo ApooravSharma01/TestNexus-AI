@@ -1,21 +1,8 @@
-import { useRef } from "react";
-
 import { formatDate } from "../format.js";
+import { LoadReportButton } from "./LoadReportButton.jsx";
 import { Logo } from "./Logo.jsx";
 
 export function Header({ mode, generatedAt, onLoadFile }) {
-  const inputRef = useRef(null);
-
-  function handleChange(event) {
-    const file = event.target.files?.[0];
-
-    if (file) {
-      onLoadFile(file);
-    }
-
-    event.target.value = "";
-  }
-
   return (
     <header className="topbar">
       <div className="topbar-inner">
@@ -32,16 +19,7 @@ export function Header({ mode, generatedAt, onLoadFile }) {
             </span>
           )}
           {generatedAt && <span className="topbar-meta">Generated {formatDate(generatedAt)}</span>}
-          <button type="button" className="button" onClick={() => inputRef.current?.click()}>
-            Load report
-          </button>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="application/json,.json"
-            hidden
-            onChange={handleChange}
-          />
+          <LoadReportButton onLoadFile={onLoadFile} />
         </div>
       </div>
     </header>

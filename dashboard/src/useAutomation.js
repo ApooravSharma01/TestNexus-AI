@@ -20,6 +20,13 @@ async function readJson(url, options) {
 
   const body = await response.json().catch(() => null);
 
+  // A static host answers unknown paths with its home page. That is not the runner either.
+  if (response.ok && body === null) {
+    const error = new Error("The suite runner is not reachable.");
+    error.unreachable = true;
+    throw error;
+  }
+
   if (!response.ok) {
     const error = new Error(body?.error?.message || `Request failed (${response.status})`);
     error.status = response.status;
@@ -50,6 +57,29 @@ const EMPTY = {
   savedAt: null,
   error: null
 };
+
+// What to show when the runner cannot be reached. In local development the last saved answer is shown
+// (read-only). A hosted site starts clean instead of showing results from some earlier day.
+async function offlineState() {
+  if (import.meta.env.DEV) {
+    try {
+      const saved = await readSavedCopy();
+
+      return {
+        connection: "snapshot",
+        suites: saved.suites,
+        runs: saved.runs,
+        pullRequests: saved.pullRequests,
+        savedAt: saved.savedAt,
+        error: null
+      };
+    } catch {
+      // No saved copy yet.
+    }
+  }
+
+  return { ...EMPTY, connection: "offline" };
+}
 
 // connection is one of:
 //   loading   first request not answered yet
@@ -88,19 +118,7 @@ export function useAutomation() {
       };
     } catch (error) {
       if (error.unreachable) {
-        try {
-          const saved = await readSavedCopy();
-          next = {
-            connection: "snapshot",
-            suites: saved.suites,
-            runs: saved.runs,
-            pullRequests: saved.pullRequests,
-            savedAt: saved.savedAt,
-            error: null
-          };
-        } catch {
-          next = { ...EMPTY, connection: "offline" };
-        }
+        next = await offlineState();
       } else {
         next = { ...EMPTY, connection: "error", error: error.message };
       }
