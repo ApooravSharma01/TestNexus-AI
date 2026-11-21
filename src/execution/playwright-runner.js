@@ -63,6 +63,11 @@ function runPlaywrightCommand(args) {
   });
 }
 
+// One regex that matches exactly the given test titles, for Playwright's --grep.
+export function buildGrepPattern(tests) {
+  return tests.map((test) => `${escapeRegex(test.title)}$`).join("|");
+}
+
 export function createPlaywrightRunner({ runCommand = runPlaywrightCommand } = {}) {
   return async function runSelectedTests(tests) {
     if (tests.length === 0) {
@@ -75,7 +80,7 @@ export function createPlaywrightRunner({ runCommand = runPlaywrightCommand } = {
       };
     }
 
-    const pattern = tests.map((test) => `${escapeRegex(test.title)}$`).join("|");
+    const pattern = buildGrepPattern(tests);
     const command = await runCommand([
       "test",
       "--reporter=json",

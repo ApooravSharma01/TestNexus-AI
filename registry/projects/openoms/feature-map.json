@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sale-order",
+    "name": "Sale order creation",
+    "critical": true,
+    "paths": [
+      "apps/api-server/internal/handler/order_handler",
+      "apps/api-server/internal/handler/order_group_handler",
+      "apps/api-server/internal/service/order_service",
+      "apps/api-server/internal/service/order_group_service",
+      "apps/api-server/internal/service/order_created_handler",
+      "apps/api-server/internal/repository/order_repository",
+      "apps/api-server/internal/repository/order_group_repository",
+      "apps/api-server/internal/model/order",
+      "apps/api-server/internal/handler/auth_handler",
+      "apps/api-server/internal/service/auth_service",
+      "apps/dashboard/src/app/(dashboard)/orders/",
+      "apps/dashboard/src/components/orders/",
+      "apps/dashboard/src/app/(auth)/",
+      "qa-automation/order-creation/pages/",
+      "qa-automation/order-creation/helpers/",
+      "qa-automation/order-creation/fixtures/",
+      "qa-automation/order-creation/playwright.config.js"
+    ]
+  }
+]

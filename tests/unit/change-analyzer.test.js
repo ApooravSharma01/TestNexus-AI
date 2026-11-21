@@ -112,3 +112,22 @@ test("should keep the old path when a file is renamed", () => {
   assert.equal(analysis.files[0].previousPath, "src/auth/form.js");
   assert.equal(analysis.files[0].category, "source");
 });
+
+test("should treat Go and SQL files as source and Go tests as tests", () => {
+  const analysis = analyzePullRequest({
+    number: 6,
+    title: "Change order handler",
+    state: "open",
+    changedFiles: [
+      { path: "apps/api-server/internal/handler/order_handler.go", status: "modified", additions: 3, deletions: 1, patch: null },
+      { path: "apps/api-server/internal/handler/order_handler_test.go", status: "modified", additions: 5, deletions: 0, patch: null },
+      { path: "apps/api-server/migrations/000050_orders.up.sql", status: "added", additions: 10, deletions: 0, patch: null },
+      { path: "apps/api-server/go.mod", status: "modified", additions: 1, deletions: 1, patch: null }
+    ]
+  });
+
+  assert.deepEqual(
+    analysis.files.map((file) => file.category),
+    ["source", "test", "source", "configuration"]
+  );
+});

@@ -14,6 +14,17 @@ export function duration(ms) {
   return ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`;
 }
 
+// 251000 -> "4m 11s". Suite runs take minutes, so milliseconds would be noise.
+export function clock(ms) {
+  const seconds = Math.round(ms / 1000);
+
+  if (seconds < 60) {
+    return `${seconds}s`;
+  }
+
+  return `${Math.floor(seconds / 60)}m ${String(seconds % 60).padStart(2, "0")}s`;
+}
+
 export function formatDate(value) {
   return new Date(value).toLocaleString(undefined, {
     dateStyle: "medium",

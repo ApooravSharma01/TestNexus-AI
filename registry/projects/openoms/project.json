@@ -1,0 +1,6 @@
+{
+  "id": "openoms",
+  "name": "OpenOMS",
+  "repository": { "owner": "ApooravSharma01", "name": "openoms" },
+  "execution": "github-actions"
+}
