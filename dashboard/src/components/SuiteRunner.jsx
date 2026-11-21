@@ -1,6 +1,7 @@
 import { formatDate } from "../format.js";
 import { STATE, resultText } from "../automation.js";
 import { STARTING_WINDOW_MS } from "../useAutomation.js";
+import { EmptyState } from "./EmptyState.jsx";
 import { Panel } from "./Panel.jsx";
 import { RecentRuns } from "./RecentRuns.jsx";
 
@@ -86,19 +87,27 @@ export function SuiteRunner({ automation }) {
       subtitle="Starts a real GitHub Actions run on the product repository and reports back here."
       action={<span className={`status tone-${status.tone}`}>{status.label}</span>}
     >
+      {connection === "loading" && <p className="muted">Connecting to the suite runner...</p>}
+
       {connection === "offline" && (
-        <div className="suite-offline">
-          <p>The suite runner is not running, so the buttons are off.</p>
-          <p className="muted">Start the dashboard and runner together in one terminal, then this page reconnects by itself:</p>
-          <code className="mono">npm run dev:all</code>
-        </div>
+        <EmptyState title="Suite runner not connected">
+          <p>
+            Suites run on GitHub Actions, and this page talks to them through the TestNexus suite runner.
+            Once it is connected you can start suites here and watch them finish. This page reconnects by itself.
+          </p>
+          <details className="empty-details">
+            <summary>How to connect it</summary>
+            <p>On the machine that holds your GitHub token, run:</p>
+            <code className="mono">npm run dev:all</code>
+          </details>
+        </EmptyState>
       )}
 
       {connection === "error" && (
-        <div className="suite-offline">
-          <p>The suite runner is running, but GitHub did not answer.</p>
+        <EmptyState title="GitHub did not answer">
+          <p>The suite runner is running, but GitHub returned an error:</p>
           <p className="muted">{error}</p>
-        </div>
+        </EmptyState>
       )}
 
       {connection === "snapshot" && (

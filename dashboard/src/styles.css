@@ -1047,29 +1047,8 @@ tbody tr:hover td {
   margin: 0;
 }
 
-.suite-offline {
-  display: grid;
-  gap: 6px;
-  padding: 14px 16px;
-  border: 1px dashed var(--border-strong);
-  border-radius: 8px;
-  background: var(--surface-muted);
-}
 
-.suite-offline p {
-  margin: 0;
-}
 
-.suite-offline code {
-  justify-self: start;
-  max-width: 100%;
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  overflow-x: auto;
-  white-space: nowrap;
-}
 
 .table-wrap a {
   color: var(--accent);
@@ -1079,6 +1058,79 @@ tbody tr:hover td {
 
 .table-wrap a:hover {
   text-decoration: underline;
+}
+
+/* Page shell: the footer always sits at the bottom of the window */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.app-shell > .page {
+  flex: 1 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  align-content: start;
+}
+
+.app-shell > .site-footer {
+  flex-shrink: 0;
+}
+
+/* Empty states */
+
+.empty-state {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 36px 0 28px;
+  text-align: center;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.empty-body p {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.empty-details {
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.empty-details summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 550;
+}
+
+.empty-details code {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.sample-note {
+  margin: 0;
 }
 
 /* Dashboard sections, live progress and failure lists */

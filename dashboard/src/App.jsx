@@ -2,10 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 
 import { ChangedFiles } from "./components/ChangedFiles.jsx";
 import { CriticalBanner } from "./components/CriticalBanner.jsx";
+import { EmptyState } from "./components/EmptyState.jsx";
 import { Explanation } from "./components/Explanation.jsx";
 import { Failures } from "./components/Failures.jsx";
 import { Header } from "./components/Header.jsx";
 import { ImpactedFeatures } from "./components/ImpactedFeatures.jsx";
+import { LoadReportButton } from "./components/LoadReportButton.jsx";
+import { Panel } from "./components/Panel.jsx";
 import { PullRequests } from "./components/PullRequests.jsx";
 import { QualityPanel } from "./components/QualityPanel.jsx";
 import { RiskBreakdown } from "./components/RiskBreakdown.jsx";
@@ -17,7 +20,7 @@ import { StatCard } from "./components/StatCard.jsx";
 import { SuiteRunner } from "./components/SuiteRunner.jsx";
 import { Tabs } from "./components/Tabs.jsx";
 import { TestResults } from "./components/TestResults.jsx";
-import { capitalize, duration, estimateTimeSaved, percent, riskTone } from "./format.js";
+import { capitalize, duration, estimateTimeSaved, formatDate, percent, riskTone } from "./format.js";
 import { useAutomation } from "./useAutomation.js";
 
 const TABS = ["suites", "pull-requests", "analysis"];
@@ -90,6 +93,12 @@ function Analysis({ active, evaluation, error }) {
   return (
     <>
       {error && <p className="notice tone-bad">{error}</p>}
+      {active.sample && (
+        <p className="notice sample-note" role="status">
+          This is sample data from {formatDate(report.generatedAt)}, shown so you can see what an analysis looks like.
+          Load a report to see your own pull request.
+        </p>
+      )}
       <RunSwitcher runs={active.runs} activeId={active.id} onSelect={active.onSelect} />
       <CriticalBanner tests={report.missedCriticalTests || []} />
 
@@ -188,6 +197,9 @@ export function App() {
   const [runs, setRuns] = useState([]);
   const [activeId, setActiveId] = useState("");
   const [evaluation, setEvaluation] = useState(null);
+  // Sample data that ships with the dashboard. It is only opened when the visitor asks for it,
+  // so a new visitor never lands on old results.
+  const [bundled, setBundled] = useState(null);
   const [error, setError] = useState("");
   const [tab, selectTab] = useHashTab();
   const automation = useAutomation();
@@ -201,31 +213,33 @@ export function App() {
         return response.json();
       })
       .then((history) => {
-        const nextRuns = runsFromHistory(history);
+        const sampleRuns = runsFromHistory(history).map((run) => ({ ...run, sample: true }));
 
-        if (nextRuns.length === 0) {
-          throw new Error("No report found. Run npm run analyze, then npm run dashboard:sync.");
+        if (sampleRuns.length === 0) {
+          throw new Error("No sample runs.");
         }
 
-        setRuns(nextRuns);
-        setActiveId(nextRuns[0].id);
-        setEvaluation(history.evaluation);
+        setBundled({ runs: sampleRuns, evaluation: history.evaluation });
       })
       .catch(() => {
         fetch("/sample-report.json")
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("No report found. Run npm run analyze, then npm run dashboard:sync.");
-            }
-            return response.json();
-          })
+          .then((response) => (response.ok ? response.json() : Promise.reject(new Error("No sample."))))
           .then((report) => {
-            setRuns([{ id: "sample", name: "Sample", report, metrics: null }]);
-            setActiveId("sample");
+            setBundled({
+              runs: [{ id: "sample", name: "Sample", report, metrics: null, sample: true }],
+              evaluation: null
+            });
           })
-          .catch((loadError) => setError(loadError.message));
+          .catch(() => setBundled(null));
       });
   }, []);
+
+  function openSample() {
+    setRuns(bundled.runs);
+    setActiveId(bundled.runs[0].id);
+    setEvaluation(bundled.evaluation);
+    setError("");
+  }
 
   function loadFile(file) {
     file.text()
@@ -243,7 +257,7 @@ export function App() {
           metrics: null
         };
 
-        setRuns((current) => [loaded, ...current.filter((run) => run.id !== loaded.id)]);
+        setRuns((current) => [loaded, ...current.filter((run) => !run.sample && run.id !== loaded.id)]);
         setActiveId(loaded.id);
         setError("");
       })
@@ -254,14 +268,16 @@ export function App() {
 
   const active = runs.find((run) => run.id === activeId);
   const report = active?.report;
+  // A count of 0 would read as "nothing here" when the runner simply is not connected.
+  const hasData = automation.connection === "online" || automation.connection === "snapshot";
   const tabs = [
-    { id: "suites", label: "Suites", count: automation.suites.length },
-    { id: "pull-requests", label: "Pull requests", count: automation.pullRequests.length },
+    { id: "suites", label: "Suites", count: hasData ? automation.suites.length : undefined },
+    { id: "pull-requests", label: "Pull requests", count: hasData ? automation.pullRequests.length : undefined },
     { id: "analysis", label: "Analysis" }
   ];
 
   return (
-    <>
+    <div className="app-shell">
       {/* The report's mode and date only describe the Analysis tab, so they are not shown elsewhere. */}
       <Header
         mode={tab === "analysis" ? report?.intelligence.mode : undefined}
@@ -280,7 +296,32 @@ export function App() {
             error={error}
           />
         ) : (
-          <p className={error ? "notice tone-bad" : "muted"}>{error || "Loading report..."}</p>
+          <Panel
+            title="Regression analysis"
+            subtitle="See which tests TestNexus picked for a pull request, and why."
+          >
+            {error && <p className="notice tone-bad">{error}</p>}
+            <EmptyState
+              title="No analysis open yet"
+              actions={(
+                <>
+                  <LoadReportButton onLoadFile={loadFile} className="button button-primary">
+                    Load a report
+                  </LoadReportButton>
+                  {bundled && (
+                    <button type="button" className="button" onClick={openSample}>
+                      Open the sample analysis
+                    </button>
+                  )}
+                </>
+              )}
+            >
+              <p>
+                Open the report from <code className="mono">npm run analyze</code> to see the risk, the tests picked
+                and the reasons. The sample shows what a finished analysis looks like.
+              </p>
+            </EmptyState>
+          </Panel>
         ))}
       </main>
       <footer className="site-footer">
@@ -288,6 +329,6 @@ export function App() {
           Made with <span role="img" aria-label="love">❤️</span> by <strong>Apoorav Sharma</strong>, Software Test Engineer
         </p>
       </footer>
-    </>
+    </div>
   );
 }

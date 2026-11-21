@@ -1,5 +1,6 @@
 import { capitalize, formatDate, riskTone } from "../format.js";
 import { STATE } from "../automation.js";
+import { EmptyState } from "./EmptyState.jsx";
 import { FailureList } from "./FailureList.jsx";
 import { Panel } from "./Panel.jsx";
 
@@ -16,10 +17,19 @@ export function PullRequests({ automation }) {
     >
       {connection === "loading" && <p className="muted">Loading pull requests...</p>}
 
-      {(connection === "offline" || connection === "error") && (
-        <p className="notice tone-bad">
-          Pull requests cannot be loaded right now. {error || "Start the runner with npm run dev:all."}
-        </p>
+      {connection === "offline" && (
+        <EmptyState title="Waiting for the suite runner">
+          <p>
+            Pull request activity appears here once the suite runner is connected. It shows each pull request,
+            the tests TestNexus picked for it, and how CI went.
+          </p>
+        </EmptyState>
+      )}
+
+      {connection === "error" && (
+        <EmptyState title="GitHub did not answer">
+          <p className="muted">{error}</p>
+        </EmptyState>
       )}
 
       {connection === "snapshot" && (
@@ -27,9 +37,9 @@ export function PullRequests({ automation }) {
       )}
 
       {hasRows && pullRequests.length === 0 && (
-        <p className="muted">
-          No pull request runs yet. When a pull request changes the order code, its TestNexus decision appears here.
-        </p>
+        <EmptyState title="No pull requests yet">
+          <p>When a pull request changes the order code, its TestNexus decision appears here.</p>
+        </EmptyState>
       )}
 
       {hasRows && pullRequests.length > 0 && (
