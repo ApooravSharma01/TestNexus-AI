@@ -1,4 +1,4 @@
-import { PROOF, PRODUCT_URL, RECORDED_ON, REPO_URL, STACK, STEPS } from "../showcase.js";
+import { PROOF, RECORDED_ON, REPO_URL, STACK, STEPS } from "../showcase.js";
 
 export function Overview({ onNavigate, onOpenSample, canOpenSample }) {
   return (
@@ -20,7 +20,6 @@ export function Overview({ onNavigate, onOpenSample, canOpenSample }) {
             See a real example
           </button>
           <a className="button" href={REPO_URL} target="_blank" rel="noreferrer">View the code on GitHub</a>
-          <a className="button" href={PRODUCT_URL} target="_blank" rel="noreferrer">The product under test</a>
         </div>
       </section>
 
