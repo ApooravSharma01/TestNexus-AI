@@ -1,9 +1,11 @@
 import { parsePatch } from "./diff-parser.js";
 
-const SOURCE_EXTENSIONS = new Set([".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"]);
+const SOURCE_EXTENSIONS = new Set([".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs", ".go", ".sql"]);
 const CONFIG_FILE_NAMES = new Set([
   "package.json",
   "package-lock.json",
+  "go.mod",
+  "go.sum",
   ".gitignore",
   ".env.example",
   "Dockerfile"
@@ -30,7 +32,7 @@ function extensionOf(fileName) {
 }
 
 function isTestPath(filePath, fileName) {
-  if (/\.(test|spec)\.[cm]?[jt]sx?$/.test(fileName)) {
+  if (/\.(test|spec)\.[cm]?[jt]sx?$/.test(fileName) || fileName.endsWith("_test.go")) {
     return true;
   }
 
