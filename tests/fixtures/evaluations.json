@@ -1,8 +1,13 @@
 [
   {
     "name": "login change",
-    "relevantTestIds": ["AUTH-LOGIN-001", "AUTH-LOGIN-002"],
-    "criticalTestIds": ["AUTH-LOGIN-001"],
+    "relevantTestIds": [
+      "AUTH-LOGIN-001",
+      "AUTH-LOGIN-002"
+    ],
+    "criticalTestIds": [
+      "AUTH-LOGIN-001"
+    ],
     "summary": {
       "number": 12,
       "title": "Add login validation",
@@ -41,8 +46,12 @@
   },
   {
     "name": "checkout change",
-    "relevantTestIds": ["CHECKOUT-001"],
-    "criticalTestIds": ["CHECKOUT-001"],
+    "relevantTestIds": [
+      "CHECKOUT-001"
+    ],
+    "criticalTestIds": [
+      "CHECKOUT-001"
+    ],
     "summary": {
       "number": 14,
       "title": "Update checkout",
@@ -61,7 +70,9 @@
   },
   {
     "name": "catalog change",
-    "relevantTestIds": ["CATALOG-001"],
+    "relevantTestIds": [
+      "CATALOG-001"
+    ],
     "criticalTestIds": [],
     "summary": {
       "number": 15,
@@ -81,8 +92,14 @@
   },
   {
     "name": "unmapped source",
-    "relevantTestIds": ["AUTH-LOGIN-001", "CHECKOUT-001"],
-    "criticalTestIds": ["AUTH-LOGIN-001", "CHECKOUT-001"],
+    "relevantTestIds": [
+      "AUTH-LOGIN-001",
+      "CHECKOUT-001"
+    ],
+    "criticalTestIds": [
+      "AUTH-LOGIN-001",
+      "CHECKOUT-001"
+    ],
     "summary": {
       "number": 16,
       "title": "Add billing tax",
@@ -94,6 +111,29 @@
           "status": "added",
           "additions": 20,
           "deletions": 0,
+          "patch": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "catalog price change",
+    "relevantTestIds": [
+      "CATALOG-001",
+      "CHECKOUT-001"
+    ],
+    "criticalTestIds": [],
+    "summary": {
+      "number": 17,
+      "title": "Change how catalog prices are calculated",
+      "state": "open",
+      "changedFiles": [
+        {
+          "path": "src/catalog/price.js",
+          "previousPath": null,
+          "status": "modified",
+          "additions": 6,
+          "deletions": 2,
           "patch": null
         }
       ]

@@ -1,11 +1,12 @@
 import { createServer } from "node:http";
+import { writeFile } from "node:fs/promises";
 
 import { AppError } from "../utils/app-error.js";
 import { handleError } from "../utils/error-handler.js";
+import { logger } from "../utils/logger.js";
 
 // Browsers on this machine are the only callers we expect.
 const localOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
-
 const localHost = /^(localhost|127\.0\.0\.1)(:\d+)?$/;
 
 function sendJson(response, statusCode, body) {
@@ -16,7 +17,17 @@ function sendJson(response, statusCode, body) {
   response.end(JSON.stringify(body));
 }
 
-export function createSuiteServer({ service }) {
+// Keeps the last answer on disk, so the dashboard can still show results when this server is off.
+// It never contains the token.
+async function saveSnapshot(path, body) {
+  try {
+    await writeFile(path, JSON.stringify(body, null, 2));
+  } catch (error) {
+    logger.warn("Could not save the dashboard snapshot", { reason: error.message });
+  }
+}
+
+export function createSuiteServer({ service, snapshotPath = null }) {
   return createServer(async (request, response) => {
     try {
       const url = new URL(request.url, "http://localhost");
@@ -42,7 +53,13 @@ export function createSuiteServer({ service }) {
       }
 
       if (request.method === "GET" && url.pathname === "/api/suite-runs") {
-        return sendJson(response, 200, { runs: await service.listRuns() });
+        const body = await service.listAutomation();
+
+        if (snapshotPath) {
+          await saveSnapshot(snapshotPath, body);
+        }
+
+        return sendJson(response, 200, body);
       }
 
       const runMatch = url.pathname.match(/^\/api\/suites\/([a-z0-9-]+)\/run$/);

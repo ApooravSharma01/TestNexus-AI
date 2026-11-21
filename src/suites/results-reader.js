@@ -5,6 +5,7 @@ import { inflateRawSync } from "node:zlib";
 const END_OF_DIRECTORY = 0x06054b50;
 const CENTRAL_ENTRY = 0x02014b50;
 const LOCAL_ENTRY = 0x04034b50;
+const ANSI_COLOR = /\u001b\[[0-9;]*m/g;
 
 export function readZipEntry(buffer, wantedName) {
   let end = -1;
@@ -63,7 +64,12 @@ export function readZipEntry(buffer, wantedName) {
   throw new Error(`${wantedName} is not in the zip file`);
 }
 
-// Turns a Playwright JSON report into counts plus one row per test.
+// First line of a Playwright error, without terminal colour codes.
+function firstLine(message) {
+  return String(message || "").replace(ANSI_COLOR, "").split("\n")[0].trim();
+}
+
+// Turns a Playwright JSON report into counts, one row per test, and the failures.
 // The login setup step is not a real test, so it is left out of the counts.
 export function summarizePlaywrightResults(report) {
   const tests = [];
@@ -76,13 +82,16 @@ export function summarizePlaywrightResults(report) {
         }
 
         const lastResult = test.results?.[test.results.length - 1];
+        const status = test.status === "expected" ? "passed"
+          : test.status === "skipped" ? "skipped"
+            : test.status === "flaky" ? "flaky" : "failed";
+
         tests.push({
           title: spec.title,
           file: spec.file,
-          status: test.status === "expected" ? "passed"
-            : test.status === "skipped" ? "skipped"
-              : test.status === "flaky" ? "flaky" : "failed",
-          durationMs: lastResult?.duration || 0
+          status,
+          durationMs: lastResult?.duration || 0,
+          message: status === "failed" ? firstLine(lastResult?.error?.message) : ""
         });
       }
     }
@@ -104,6 +113,26 @@ export function summarizePlaywrightResults(report) {
     failed: count("failed"),
     flaky: count("flaky"),
     skipped: count("skipped"),
+    failures: tests
+      .filter((test) => test.status === "failed")
+      .map((test) => ({ title: test.title, message: test.message })),
     tests
+  };
+}
+
+// What TestNexus decided for one pull request, from its uploaded report.
+export function summarizeSelection(report) {
+  const picked = report.selectedTests || [];
+  const skipped = report.skippedTests || [];
+
+  return {
+    picked: picked.map((test) => test.id),
+    pickedCount: picked.length,
+    total: picked.length + skipped.length,
+    risk: {
+      level: report.risk?.level || null,
+      score: report.risk?.score ?? null
+    },
+    mode: report.intelligence?.mode || null
   };
 }

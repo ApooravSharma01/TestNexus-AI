@@ -16,6 +16,8 @@ playwright-report/
 test-results/
 reports/
 dashboard/dist/
+# Saved copy of suite runs, written by the suite runner API
+dashboard/public/suite-runs.json
 
 # Operating system and editor files
 .DS_Store

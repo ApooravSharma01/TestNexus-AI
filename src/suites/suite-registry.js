@@ -25,6 +25,10 @@ export function validateSuites(suites) {
       throw new AppError(`Duplicate suite id ${suite.id}`, 500, "SUITE_REGISTRY_INVALID");
     }
 
+    if (suite.pullRequestReport && (!suite.pullRequestReport.artifact || !suite.pullRequestReport.file)) {
+      throw new AppError(`Suite ${suite.id} needs pullRequestReport.artifact and pullRequestReport.file`, 500, "SUITE_REGISTRY_INVALID");
+    }
+
     seen.add(suite.id);
   }
 
