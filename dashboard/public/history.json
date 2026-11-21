@@ -150,7 +150,7 @@
       },
       "testsSaved": 2,
       "report": {
-        "generatedAt": "2026-11-19T17:56:20.483Z",
+        "generatedAt": "2026-11-21T09:32:47.578Z",
         "pullRequest": {
           "number": 12,
           "title": "Add login validation",
@@ -267,7 +267,7 @@
       },
       "testsSaved": 4,
       "report": {
-        "generatedAt": "2026-11-19T17:56:20.484Z",
+        "generatedAt": "2026-11-21T09:32:47.579Z",
         "pullRequest": {
           "number": 13,
           "title": "Update readme",
@@ -362,7 +362,7 @@
       },
       "testsSaved": 3,
       "report": {
-        "generatedAt": "2026-11-19T17:56:20.484Z",
+        "generatedAt": "2026-11-21T09:32:47.579Z",
         "pullRequest": {
           "number": 14,
           "title": "Update checkout",
@@ -478,7 +478,7 @@
       },
       "testsSaved": 3,
       "report": {
-        "generatedAt": "2026-11-19T17:56:20.484Z",
+        "generatedAt": "2026-11-21T09:32:47.579Z",
         "pullRequest": {
           "number": 15,
           "title": "Update catalog",
@@ -589,7 +589,7 @@
       },
       "testsSaved": 2,
       "report": {
-        "generatedAt": "2026-11-19T17:56:20.485Z",
+        "generatedAt": "2026-11-21T09:32:47.580Z",
         "pullRequest": {
           "number": 16,
           "title": "Add billing tax",
@@ -688,11 +688,129 @@
           "source": "labeled case \"unmapped source\""
         }
       }
+    },
+    {
+      "name": "catalog price change",
+      "metrics": {
+        "precision": 1,
+        "recall": 0.5,
+        "criticalRecall": 1,
+        "falseNegatives": [
+          "CHECKOUT-001"
+        ]
+      },
+      "testsSaved": 3,
+      "report": {
+        "generatedAt": "2026-11-21T09:32:47.580Z",
+        "pullRequest": {
+          "number": 17,
+          "title": "Change how catalog prices are calculated",
+          "state": "open"
+        },
+        "totals": {
+          "files": 1,
+          "additions": 6,
+          "deletions": 2,
+          "churn": 8
+        },
+        "changedFiles": [
+          {
+            "path": "src/catalog/price.js",
+            "previousPath": null,
+            "status": "modified",
+            "category": "source",
+            "additions": 6,
+            "deletions": 2,
+            "hunks": []
+          }
+        ],
+        "risk": {
+          "score": 21,
+          "level": "low",
+          "reasons": [
+            "A product feature changed (+20).",
+            "Change size added 1 points."
+          ],
+          "factors": [
+            {
+              "label": "Product feature changed",
+              "points": 20
+            },
+            {
+              "label": "Change size",
+              "points": 1
+            }
+          ]
+        },
+        "impact": {
+          "features": [
+            {
+              "id": "catalog",
+              "name": "Product catalog",
+              "critical": false,
+              "files": [
+                "src/catalog/price.js"
+              ]
+            }
+          ],
+          "unmatchedSourceFiles": [],
+          "documentationOnly": false
+        },
+        "selectionReason": "Tests were selected for the impacted features.",
+        "intelligence": {
+          "mode": "deterministic",
+          "explanation": "Risk is low (21/100). A product feature changed (+20). Change size added 1 points. Impacted features: Product catalog. Selected 1 tests: CATALOG-001.",
+          "addedTestIds": []
+        },
+        "missedCriticalTests": [],
+        "comparison": {
+          "fullRegressionCount": 4,
+          "deterministicCount": 1,
+          "intelligentCount": 1,
+          "testsSaved": 3
+        },
+        "rejectedTestIds": [],
+        "selectedTests": [
+          {
+            "id": "CATALOG-001",
+            "title": "catalog shows a product",
+            "featureId": "catalog",
+            "critical": false,
+            "file": "tests/e2e/catalog.spec.js"
+          }
+        ],
+        "skippedTests": [
+          {
+            "id": "AUTH-LOGIN-001",
+            "title": "user can log in with valid credentials",
+            "featureId": "authentication",
+            "critical": true
+          },
+          {
+            "id": "AUTH-LOGIN-002",
+            "title": "login rejects an empty password",
+            "featureId": "authentication",
+            "critical": false
+          },
+          {
+            "id": "CHECKOUT-001",
+            "title": "user can place an order",
+            "featureId": "checkout",
+            "critical": true
+          }
+        ],
+        "execution": null,
+        "diagnosis": [],
+        "run": {
+          "command": "npm run evaluate",
+          "source": "labeled case \"catalog price change\""
+        }
+      }
     }
   ],
   "evaluation": {
     "averagePrecision": 1,
-    "averageRecall": 1,
+    "averageRecall": 0.9166666666666666,
     "averageCriticalRecall": 1,
     "cases": [
       {
@@ -744,6 +862,18 @@
           "falseNegatives": []
         },
         "testsSaved": 2
+      },
+      {
+        "name": "catalog price change",
+        "metrics": {
+          "precision": 1,
+          "recall": 0.5,
+          "criticalRecall": 1,
+          "falseNegatives": [
+            "CHECKOUT-001"
+          ]
+        },
+        "testsSaved": 3
       }
     ]
   }

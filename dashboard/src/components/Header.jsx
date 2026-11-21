@@ -23,7 +23,7 @@ export function Header({ mode, generatedAt, onLoadFile }) {
           <Logo />
           <span className="brand-name">TestNexus AI</span>
           <span className="brand-divider" aria-hidden="true">/</span>
-          <span className="brand-page">Regression analysis</span>
+          <span className="brand-page">Regression control</span>
         </div>
         <div className="topbar-actions">
           {mode && (

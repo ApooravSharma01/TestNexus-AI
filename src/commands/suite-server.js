@@ -4,10 +4,15 @@ import { createSuiteService } from "../suites/suite-service.js";
 import { loadSuites } from "../suites/suite-registry.js";
 import { handleError } from "../utils/error-handler.js";
 import { logger } from "../utils/logger.js";
+import { fromRoot } from "../utils/project-root.js";
 
 try {
   const service = createSuiteService({ suites: await loadSuites() });
-  const server = createSuiteServer({ service });
+  // Written under dashboard/public so the page can read it when this server is off.
+  const server = createSuiteServer({
+    service,
+    snapshotPath: fromRoot("dashboard/public/suite-runs.json")
+  });
 
   // 127.0.0.1 keeps the GitHub token's power on this machine only.
   server.listen(env.suiteApiPort, "127.0.0.1", () => {

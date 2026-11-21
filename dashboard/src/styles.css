@@ -1081,6 +1081,83 @@ tbody tr:hover td {
   text-decoration: underline;
 }
 
+/* Dashboard sections, live progress and failure lists */
+
+.tabs-bar {
+  margin: 20px 0 16px;
+}
+
+.tabs {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.suite-progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.suite-progress a {
+  color: var(--accent);
+}
+
+.suite-saved {
+  margin: 0 0 14px;
+}
+
+.suite-saved code {
+  font-size: 12px;
+}
+
+.toggle-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.step {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.failure-details {
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.failure-details summary {
+  cursor: pointer;
+  color: var(--bad);
+  font-weight: 550;
+}
+
+.failure-details ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  color: var(--text-muted);
+}
+
+.failure-details li + li {
+  margin-top: 6px;
+}
+
+.failure-details .message {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-subtle);
+  word-break: break-word;
+}
+
 /* Responsive */
 
 @media (max-width: 1100px) {

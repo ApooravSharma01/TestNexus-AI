@@ -85,13 +85,27 @@ Pull request on OpenOMS
 
 ### Run a suite from the dashboard
 
-Suites are listed in `registry/suites.json`. Each one points at a workflow, a branch and a Playwright filter.
+Start everything with one command:
 
 ```bash
-npm run suites:server        # terminal 1, needs GITHUB_TOKEN with repo and workflow access
-cd dashboard && npm run dev  # terminal 2, then open http://127.0.0.1:5173
+npm run dev:all        # runner API on 127.0.0.1:4000 and dashboard on http://127.0.0.1:5173
+```
+
+Press Ctrl+C once to stop both. Each line of output is labelled `[api]` or `[dashboard]`.
+
+The dashboard has three sections, kept in the URL so a link opens the right one:
+
+- **Suites** (`#suites`): the run buttons, live progress for active runs (for example "Waiting for a runner" or the step name), and recent runs. Every run is labelled as a suite, a pull request, or manual. Cancelled runs are hidden until you tick "Show cancelled runs". A failed run shows its failed test names, and the first line of each error opens with one click.
+- **Pull requests** (`#pull-requests`): every pull request TestNexus looked at, with CI status, how many tests it picked out of the total, its risk, and failures.
+- **Analysis** (`#analysis`): the report view for a single TestNexus run, including the labelled evaluation.
+
+When the runner is off, the dashboard shows the last saved results (`dashboard/public/suite-runs.json`, git-ignored) with the buttons disabled, and reconnects by itself when you start it again.
+
+Suites are listed in `registry/suites.json`. Each one points at a workflow, a branch and a Playwright filter. You can also run them from the command line:
+
+```bash
 npm run suite -- --list      # same suites from the command line
 npm run suite -- sale-order-regression
 ```
 
-The token stays in the local server, which listens on 127.0.0.1 only and refuses requests from other websites. The browser never sees it. A suite cannot be started twice at once, and the dashboard can only start suites that are in the registry.
+Set `GITHUB_TOKEN` in `.env` (needs repo and workflow access). The token stays in the local server, which listens on 127.0.0.1 only and refuses requests from other websites. The browser never sees it. A suite cannot be started twice at once, and the dashboard can only start suites that are in the registry.
