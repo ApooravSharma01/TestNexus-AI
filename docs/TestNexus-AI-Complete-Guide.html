@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TestNexus AI — Complete Project Guide</title>
+  <style>
+    @page { size: A4; margin: 18mm 16mm; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      color: #111;
+      margin: 0;
+    }
+    h1 { font-size: 22pt; margin: 0 0 8px; }
+    h2 {
+      font-size: 14pt;
+      margin: 22px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid #222;
+      page-break-after: avoid;
+    }
+    h3 { font-size: 11.5pt; margin: 14px 0 6px; page-break-after: avoid; }
+    h4 { font-size: 10.5pt; margin: 10px 0 4px; }
+    p { margin: 0 0 8px; }
+    ul, ol { margin: 0 0 10px; padding-left: 18px; }
+    li { margin-bottom: 3px; }
+    code, .mono {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 9pt;
+      background: #f2f2f2;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f4f5f7;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 8.5pt;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+      page-break-inside: avoid;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 12px;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 5px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f0f0f0; }
+    .cover {
+      min-height: 240mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      page-break-after: always;
+    }
+    .cover .meta { color: #555; margin-top: 18px; }
+    .cover .tag {
+      display: inline-block;
+      background: #e8edfd;
+      color: #2b4acb;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 9.5pt;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .toc a { color: #111; text-decoration: none; }
+    .toc li { margin-bottom: 5px; }
+    .note {
+      background: #fff8e6;
+      border-left: 3px solid #c98a00;
+      padding: 8px 10px;
+      margin: 10px 0;
+      page-break-inside: avoid;
+    }
+    .good {
+      background: #eef8f1;
+      border-left: 3px solid #1f8a5b;
+      padding: 8px 10px;
+      margin: 10px 0;
+      page-break-inside: avoid;
+    }
+    .warn {
+      background: #fdeeee;
+      border-left: 3px solid #c2413b;
+      padding: 8px 10px;
+      margin: 10px 0;
+      page-break-inside: avoid;
+    }
+    .footer-note {
+      margin-top: 28px;
+      color: #666;
+      font-size: 9pt;
+    }
+    .diagram {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 8pt;
+      background: #f8f9fb;
+      border: 1px solid #ddd;
+      padding: 12px;
+      border-radius: 6px;
+      white-space: pre;
+      overflow: hidden;
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="tag">Portfolio / project documentation</div>
+  <h1>TestNexus AI</h1>
+  <p style="font-size: 14pt; max-width: 520px;">
+    Complete guide: what it is, how the pipeline works, how the dashboard and GitHub Actions fit together,
+    and how to connect a new application.
+  </p>
+  <p class="meta">
+    Author: Apoorav Sharma<br />
+    Role focus: Software Test Engineer / SDET<br />
+    Repositories:<br />
+    &nbsp;&nbsp;https://github.com/ApooravSharma01/TestNexus-AI<br />
+    &nbsp;&nbsp;https://github.com/ApooravSharma01/openoms (product fork under test)<br />
+    Document date: 21 November 2026<br />
+    Version: matches main after PR #7
+  </p>
+</section>
+
+<h2>Table of contents</h2>
+<ol class="toc">
+  <li>What TestNexus AI is</li>
+  <li>Big picture: three parts</li>
+  <li>What problem it solves</li>
+  <li>Repository layout</li>
+  <li>Setup and environment</li>
+  <li>The selection pipeline (step by step)</li>
+  <li>Risk scoring</li>
+  <li>AI step (optional)</li>
+  <li>Command-line usage</li>
+  <li>Evaluation and labelled quality</li>
+  <li>Dashboard (control room)</li>
+  <li>Suite runner API (local helper)</li>
+  <li>Connecting a real product: OpenOMS</li>
+  <li>GitHub Actions workflow on the product</li>
+  <li>How to connect a brand-new app</li>
+  <li>Suites registry and dashboard buttons</li>
+  <li>Hosting for a resume / public demo</li>
+  <li>Security rules</li>
+  <li>Known limits</li>
+  <li>Quick reference commands</li>
+  <li>Glossary</li>
+</ol>
+
+<h2>1. What TestNexus AI is</h2>
+<p>
+  TestNexus AI is an intelligent regression testing platform. It reads a pull request, decides which
+  regression tests are worth running for that change, and explains what ran, what was skipped, and why.
+</p>
+<p>
+  The selection rules are <strong>deterministic</strong> (fixed, repeatable). An optional AI call can
+  <strong>add</strong> tests. It cannot remove the tests the rules already selected.
+</p>
+<div class="good">
+  One-line story for a resume: “Reads a PR, scores regression risk, picks only the tests that matter,
+  runs them in GitHub Actions on a real order-management stack, and shows the decision in a dashboard.”
+</div>
+
+<h2>2. Big picture: three parts</h2>
+<div class="diagram">TestNexus AI (this repo)     = the brain (selection + report + dashboard)
+GitHub Actions (product)    = the muscle (starts DB, API, UI, runs Playwright)
+Dashboard (React + Vite)    = the control room (Overview, Suites, PRs, Analysis)</div>
+<p>They connect like this:</p>
+<div class="diagram">Pull request opens on the product (OpenOMS)
+        |
+        v
+GitHub Actions "select" job
+  clones / uses TestNexus
+  runs: npm run analyze -- --project openoms --pr N
+        |
+        v
+TestNexus writes a report + a Playwright grep pattern
+        |
+        v
+GitHub Actions "e2e" job
+  starts Postgres, Redis, API, dashboard
+  runs only the selected Playwright tests
+  uploads artifacts (testnexus-report, playwright-results)
+        |
+        v
+Dashboard / suite runner can show the same runs and decisions</div>
+
+<h2>3. What problem it solves</h2>
+<ul>
+  <li>Full regression on every PR is slow and expensive.</li>
+  <li>Blindly skipping tests is unsafe.</li>
+  <li>TestNexus maps changed files to features, then to known tests, then scores risk.</li>
+  <li>Small, low-risk changes run a small set. Risky or unmapped source changes keep critical coverage.</li>
+  <li>Every decision is written into a JSON report the dashboard can show.</li>
+</ul>
+
+<h2>4. Repository layout</h2>
+<table>
+  <tr><th>Path</th><th>Purpose</th></tr>
+  <tr><td><code>src/</code></td><td>Node.js application: analyzers, risk, selection, GitHub client, suite server, commands</td></tr>
+  <tr><td><code>src/core/pipeline.js</code></td><td>Main pipeline: analyze → impact → map → risk → select → AI review → validate → report</td></tr>
+  <tr><td><code>src/commands/</code></td><td>CLI entry points (<code>analyze</code>, <code>evaluate</code>, <code>dev-all</code>, suite server, …)</td></tr>
+  <tr><td><code>registry/</code></td><td>Default feature map + tests; also <code>suites.json</code></td></tr>
+  <tr><td><code>registry/projects/&lt;id&gt;/</code></td><td>Per-product profiles (<code>project.json</code>, <code>feature-map.json</code>, <code>tests.json</code>)</td></tr>
+  <tr><td><code>dashboard/</code></td><td>React 19 + Vite 7 UI (Overview, Suites, Pull requests, Analysis)</td></tr>
+  <tr><td><code>tests/</code></td><td>Unit + integration tests; labelled evaluation fixtures</td></tr>
+  <tr><td><code>reports/</code></td><td>Generated reports (git-ignored locally; sync publishes into dashboard/public)</td></tr>
+  <tr><td><code>schemas/</code></td><td>JSON schemas where used</td></tr>
+  <tr><td><code>docs/</code></td><td>This guide and related documentation</td></tr>
+</table>
+<p>Requirements: <strong>Node.js &gt;= 22</strong>, ESM modules (<code>"type": "module"</code>).</p>
+
+<h2>5. Setup and environment</h2>
+<pre>git clone https://github.com/ApooravSharma01/TestNexus-AI.git
+cd TestNexus-AI
+npm install
+cp .env.example .env
+# edit .env
+
+cd dashboard && npm install && cd ..
+npm test</pre>
+<h3>Environment variables (.env)</h3>
+<table>
+  <tr><th>Variable</th><th>Required?</th><th>Meaning</th></tr>
+  <tr><td><code>GITHUB_TOKEN</code></td><td>For real PRs / suite runner</td><td>Personal access token with <code>repo</code> and <code>workflow</code> access to the product repo</td></tr>
+  <tr><td><code>GITHUB_OWNER</code> / <code>GITHUB_REPO</code></td><td>For default PR inspect</td><td>Default repository for <code>inspect-pr</code> / analyze without <code>--project</code></td></tr>
+  <tr><td><code>SUITE_API_PORT</code></td><td>Optional (default 4000)</td><td>Local suite runner HTTP port</td></tr>
+  <tr><td><code>AI_API_KEY</code></td><td>Optional</td><td>If set, AI may suggest extra test ids</td></tr>
+  <tr><td><code>AI_MODEL</code> / <code>AI_BASE_URL</code></td><td>Optional</td><td>Defaults to OpenAI-compatible GPT-4o-mini</td></tr>
+</table>
+<div class="warn">
+  Never commit <code>.env</code>. Never put the token in the browser or in a public hosted site.
+</div>
+
+<h2>6. The selection pipeline (step by step)</h2>
+<p>Implemented in <code>src/core/pipeline.js</code>. Order:</p>
+<ol>
+  <li><strong>Load pull request summary</strong> — from a fixture JSON, or from GitHub (<code>--pr</code> / <code>--project</code>).</li>
+  <li><strong>Change analysis</strong> (<code>analyzePullRequest</code>) — labels each changed file as source, test, configuration, documentation, or other. Understands common extensions including Go and SQL.</li>
+  <li><strong>Impact analysis</strong> — matches file paths to features in the feature map.</li>
+  <li><strong>Test mapping</strong> — finds registry tests for impacted features, and tests whose own file was edited.</li>
+  <li><strong>Risk scoring</strong> — 0–100 score and low / medium / high level.</li>
+  <li><strong>Selection</strong> — keeps mapped tests; if a source file matches no feature, also keeps every critical test (safety net).</li>
+  <li><strong>Intelligence review</strong> — optional AI may add ids; unknown ids are rejected.</li>
+  <li><strong>Validation</strong> — only known registry test ids survive.</li>
+  <li><strong>Optional local execute</strong> — Playwright on the laptop (<code>--execute</code>), only when the project allows local execution.</li>
+  <li><strong>Failure diagnosis</strong> — labels failures as product vs infrastructure when execution happened.</li>
+  <li><strong>Report</strong> — JSON comparing full suite vs deterministic selection vs final selection, with reasons.</li>
+</ol>
+
+<h2>7. Risk scoring</h2>
+<table>
+  <tr><th>Condition</th><th>Points</th></tr>
+  <tr><td>Critical feature changed</td><td>40</td></tr>
+  <tr><td>Other mapped feature changed</td><td>20</td></tr>
+  <tr><td>Source file outside the feature map</td><td>25</td></tr>
+  <tr><td>Source file removed</td><td>15</td></tr>
+  <tr><td>Change size</td><td>1 point per 5 changed lines, max 20</td></tr>
+  <tr><td>Configuration changed</td><td>10</td></tr>
+</table>
+<ul>
+  <li>Documentation-only change → score 0.</li>
+  <li>Level: <strong>low</strong> &lt; 25, <strong>medium</strong> 25–59, <strong>high</strong> ≥ 60.</li>
+</ul>
+
+<h2>8. AI step (optional)</h2>
+<ul>
+  <li>Without <code>AI_API_KEY</code>, the system is fully deterministic.</li>
+  <li>With a key, the intelligence engine may suggest additional registry test ids.</li>
+  <li>Suggestions that are not in the registry are rejected.</li>
+  <li>AI cannot drop tests the rules already selected. That is intentional and important for trust.</li>
+</ul>
+
+<h2>9. Command-line usage</h2>
+<table>
+  <tr><th>Command</th><th>What it does</th></tr>
+  <tr><td><code>npm test</code></td><td>Unit + integration tests (native <code>node:test</code>)</td></tr>
+  <tr><td><code>npm run check</code></td><td>Syntax-check all JS under <code>src</code> and <code>tests</code></td></tr>
+  <tr><td><code>npm run analyze</code></td><td>Run pipeline on default fixture → <code>reports/latest.json</code></td></tr>
+  <tr><td><code>npm run analyze -- path/to.json</code></td><td>Analyze a fixture file</td></tr>
+  <tr><td><code>npm run analyze -- --pr 12</code></td><td>Analyze a real PR from default GitHub repo</td></tr>
+  <tr><td><code>npm run analyze -- --project openoms --pr 2</code></td><td>Analyze using the OpenOMS product profile</td></tr>
+  <tr><td><code>npm run analyze -- --execute</code></td><td>Also run selected Playwright tests locally (refused for github-actions projects)</td></tr>
+  <tr><td><code>npm run inspect-pr -- 12</code></td><td>Fetch PR metadata / files from GitHub</td></tr>
+  <tr><td><code>npm run evaluate</code></td><td>Score selection against labelled fixtures</td></tr>
+  <tr><td><code>npm run dashboard:sync</code></td><td>Publish latest report + evaluation into <code>dashboard/public/</code></td></tr>
+  <tr><td><code>npm run playwright-grep</code></td><td>Write a Playwright grep pattern file from a report</td></tr>
+  <tr><td><code>npm run suite -- --list</code></td><td>List registered automation suites</td></tr>
+  <tr><td><code>npm run suite -- sale-order-smoke</code></td><td>Dispatch that suite on GitHub Actions</td></tr>
+  <tr><td><code>npm run suites:server</code></td><td>Start only the local suite API on 127.0.0.1:4000</td></tr>
+  <tr><td><code>npm run dev:all</code></td><td>Start suite API + dashboard together</td></tr>
+</table>
+
+<h2>10. Evaluation and labelled quality</h2>
+<p>
+  <code>tests/fixtures/evaluations.json</code> holds hand-labelled cases (expected relevant / critical tests
+  for each change). <code>npm run evaluate</code> measures:
+</p>
+<ul>
+  <li><strong>Precision</strong> — of the tests selected, how many were relevant.</li>
+  <li><strong>Recall</strong> — of the relevant tests, how many were selected.</li>
+  <li><strong>Critical recall</strong> — same idea for critical tests only.</li>
+</ul>
+<div class="note">
+  A deliberate miss case (“catalog price change”) is included so the score is not a fake flat 100%.
+  Current story: precision 100%, average recall about 92%, critical recall 100% over 6 cases.
+</div>
+
+<h2>11. Dashboard (control room)</h2>
+<p>Location: <code>dashboard/</code>. Stack: React 19, Vite 7, CSS variables, light/dark via system preference.</p>
+<p>Start locally:</p>
+<pre>npm run dev:all
+# Dashboard: http://127.0.0.1:5173
+# Suite API: http://127.0.0.1:4000</pre>
+<p>Tabs (hash in the URL):</p>
+<table>
+  <tr><th>Tab</th><th>URL</th><th>What a visitor sees</th></tr>
+  <tr><td>Overview</td><td><code>#overview</code></td><td>Pitch page for recruiters / first visit: headline, CTAs, proof cards with real run links, how it works. Default home.</td></tr>
+  <tr><td>Suites</td><td><code>#suites</code></td><td>Run buttons for registered suites, live step progress, recent runs (suite / pull request / manual). Cancelled runs hidden by default. Failures expand to test name + first error line.</td></tr>
+  <tr><td>Pull requests</td><td><code>#pull-requests</code></td><td>Per-PR view: CI status, tests picked of total, risk, failures, last run.</td></tr>
+  <tr><td>Analysis</td><td><code>#analysis</code></td><td>Full TestNexus report (risk, funnel, features, tests, diagnosis). Starts empty on a hosted build; sample opens only on request and is labelled as sample data.</td></tr>
+</table>
+<p>Footer stays at the bottom of the window on short pages. Brand line: Made with love by Apoorav Sharma.</p>
+<div class="note">
+  When the suite runner is off: production / hosted builds show a clean “not connected” empty state
+  (no old runs). Local development may show a saved copy of the last successful fetch
+  (<code>dashboard/public/suite-runs.json</code>, git-ignored, stripped from production builds).
+</div>
+
+<h2>12. Suite runner API (local helper)</h2>
+<ul>
+  <li>Process: <code>src/commands/suite-server.js</code> → HTTP server on <code>127.0.0.1</code> only.</li>
+  <li>Holds the GitHub token on the server. The browser never sees it.</li>
+  <li>Refuses non-local <code>Origin</code> and non-local <code>Host</code> (blocks cross-site and DNS rebinding).</li>
+  <li>Main routes:
+    <ul>
+      <li><code>GET /api/health</code></li>
+      <li><code>GET /api/suites</code></li>
+      <li><code>GET /api/suite-runs</code> — suites + recent runs + pull request rows (and writes the local snapshot)</li>
+      <li><code>POST /api/suites/:id/run</code> — <code>workflow_dispatch</code> (409 if that suite is already running)</li>
+    </ul>
+  </li>
+  <li>Vite proxies <code>/api</code> to <code>http://127.0.0.1:4000</code> in development.</li>
+</ul>
+
+<h2>13. Connecting a real product: OpenOMS</h2>
+<p>
+  OpenOMS is a real industry-style order management system (API in Go, dashboard UI, Postgres, Redis,
+  Playwright suite). TestNexus uses a fork: <code>ApooravSharma01/openoms</code>.
+</p>
+<p>Product profile lives at <code>registry/projects/openoms/</code>:</p>
+<ul>
+  <li><code>project.json</code> — id, name, repository, <code>execution: "github-actions"</code> (no local <code>--execute</code>).</li>
+  <li><code>feature-map.json</code> — features (e.g. critical <code>sale-order</code>) and the path prefixes that belong to them.</li>
+  <li><code>tests.json</code> — SALE-ORDER-001 … 008 with exact Playwright titles, tags, files, critical flags.</li>
+</ul>
+<p>In CI, TestNexus is invoked roughly as:</p>
+<pre>npm run analyze -- --project openoms --pr N --out …
+npm run playwright-grep   # turns selected titles into a --grep pattern</pre>
+<p>
+  If TestNexus itself fails in the select job, the product workflow is designed so the full suite can
+  still run. Skipping tests only happens when TestNexus successfully said so.
+</p>
+
+<h2>14. GitHub Actions workflow on the product</h2>
+<p>File (on the OpenOMS fork): <code>.github/workflows/order-creation-e2e.yml</code></p>
+<h3>Triggers</h3>
+<ul>
+  <li><code>workflow_dispatch</code> — inputs: <code>suite</code>, <code>grep</code>, optional <code>pr_number</code>. Used by humans, CLI, and the dashboard.</li>
+  <li><code>pull_request</code> — path-filtered to order-related code and the suite itself.</li>
+</ul>
+<h3>Jobs (conceptually)</h3>
+<ol>
+  <li><strong>select</strong> — when PR or <code>pr_number</code> is present: run TestNexus analyze + playwright-grep; upload <code>testnexus-report</code>; output selected count / grep.</li>
+  <li><strong>order-creation-e2e</strong> — start Postgres + Redis, migrate, seed, build/start API, start dashboard, run Playwright with the grep filter, upload <code>playwright-results</code> (and report). Skips the run only when select succeeded and selected count is 0.</li>
+</ol>
+<div class="note">
+  Evidence examples used on the Overview page include real Actions runs (for example a small PR that
+  picked 2 of 8 tests, a high-risk PR that ran 8 of 8, and a full regression 8/8 pass). Counts exclude
+  the Playwright login setup project.
+</div>
+
+<h2>15. How to connect a brand-new app</h2>
+<p>Follow this checklist. You do not need to rewrite TestNexus core for each product.</p>
+
+<h3>Step A — Prepare the product</h3>
+<ol>
+  <li>Have automated tests (Playwright is the proven path) with stable titles and useful tags (<code>@smoke</code>, <code>@regression</code>, <code>@api</code>, …).</li>
+  <li>Prefer a CI workflow that can start the product stack (DB/API/UI) and accept a grep / filter input.</li>
+  <li>Add a JSON reporter so results can be uploaded as an artifact (OpenOMS writes <code>results/results.json</code>).</li>
+</ol>
+
+<h3>Step B — Create a project profile in TestNexus</h3>
+<ol>
+  <li>Create folder <code>registry/projects/&lt;id&gt;/</code> where <code>id</code> matches <code>/^[a-z0-9-]+$/</code>.</li>
+  <li>Add <code>project.json</code>:
+<pre>{
+  "id": "my-app",
+  "name": "My App",
+  "repository": { "owner": "ORG_OR_USER", "name": "REPO" },
+  "execution": "github-actions"
+}</pre>
+  Use <code>"execution": "local"</code> only if Playwright can run the product on the laptop.
+  </li>
+  <li>Add <code>feature-map.json</code> — list features with <code>id</code>, <code>name</code>, <code>critical</code>, and path prefixes that belong to each feature.</li>
+  <li>Add <code>tests.json</code> — one entry per test with:
+    <ul>
+      <li><code>id</code> (stable, e.g. <code>CHECKOUT-001</code>)</li>
+      <li><code>title</code> (exact Playwright title string used for grep)</li>
+      <li><code>featureId</code></li>
+      <li><code>file</code></li>
+      <li><code>critical</code> true/false</li>
+    </ul>
+  </li>
+</ol>
+
+<h3>Step C — Wire the product workflow</h3>
+<ol>
+  <li>On a PR (or dispatch with <code>pr_number</code>), check out / call TestNexus.</li>
+  <li>Run analyze with <code>--project my-app --pr N</code>.</li>
+  <li>Convert the report to a Playwright grep file (<code>npm run playwright-grep</code> or equivalent).</li>
+  <li>Run Playwright with that filter against the real stack.</li>
+  <li>Upload:
+    <ul>
+      <li>TestNexus report artifact (e.g. <code>testnexus-report</code> containing <code>my-app.json</code>)</li>
+      <li>Playwright results artifact (e.g. <code>playwright-results</code> containing <code>results.json</code>)</li>
+    </ul>
+  </li>
+  <li>Fail-open if TestNexus crashes: still run the full suite rather than silently skipping everything.</li>
+</ol>
+
+<h3>Step D — Register suites for the dashboard / CLI</h3>
+<p>Add entries to <code>registry/suites.json</code>:</p>
+<pre>{
+  "id": "my-app-smoke",
+  "label": "My app smoke",
+  "description": "…",
+  "repository": { "owner": "ORG_OR_USER", "name": "REPO" },
+  "workflow": "my-e2e.yml",
+  "ref": "main",
+  "inputs": { "suite": "my-app-smoke", "grep": "@smoke" },
+  "resultsArtifact": "playwright-results",
+  "pullRequestReport": { "artifact": "testnexus-report", "file": "my-app.json" }
+}</pre>
+<p>Then:</p>
+<pre>npm run suite -- --list
+npm run suite -- my-app-smoke
+# or use the Suites tab after npm run dev:all</pre>
+
+<h3>Step E — Verify</h3>
+<ol>
+  <li>Unit tests still pass: <code>npm test</code>.</li>
+  <li>Analyze a known PR: confirm selected ids look right.</li>
+  <li>Dispatch smoke and regression once; confirm artifacts and dashboard rows.</li>
+  <li>Open a real PR that touches a mapped path; confirm select → filtered e2e → green or expected fail.</li>
+</ol>
+
+<h2>16. Suites registry and dashboard buttons</h2>
+<p>Current OpenOMS suites (examples):</p>
+<table>
+  <tr><th>Suite id</th><th>Filter</th><th>Meaning</th></tr>
+  <tr><td><code>sale-order-regression</code></td><td><code>@regression</code></td><td>Full sale-order UI/API/DB set</td></tr>
+  <tr><td><code>sale-order-smoke</code></td><td><code>@smoke</code></td><td>Quick happy path + key validation</td></tr>
+  <tr><td><code>sale-order-api</code></td><td><code>@api</code></td><td>API-only checks</td></tr>
+</table>
+<p>
+  The dashboard labels runs as Suite, Pull request, or Manual. Live progress shows “Waiting for a runner”
+  or the current Actions step name. Pull request titles are resolved even when the PR lives on an upstream
+  repo (fork → upstream PR number).
+</p>
+
+<h2>17. Hosting for a resume / public demo</h2>
+<ol>
+  <li>Build only the dashboard: <code>cd dashboard && npm run build</code>.</li>
+  <li>Host <code>dashboard/dist</code> (GitHub Pages, Netlify, Vercel, …).</li>
+  <li><strong>Do not</strong> host the suite runner with your token on a public URL.</li>
+  <li>First open shows Overview (pitch + proof). Suites show “not connected” — that is expected and safe.</li>
+  <li>Keep the TestNexus and OpenOMS repos public if evidence links should open for recruiters.</li>
+  <li>Resume link tip: <code>https://your-host/#overview</code> (empty path also redirects to Overview).</li>
+</ol>
+
+<h2>18. Security rules</h2>
+<ul>
+  <li>Token only in local <code>.env</code> / CI secrets — never in frontend code or public artifacts.</li>
+  <li>Suite API binds to 127.0.0.1 and checks Origin/Host.</li>
+  <li>Production builds do not ship the saved suite-runs snapshot.</li>
+  <li>Dashboard cannot invent suites; it can only start ids present in <code>registry/suites.json</code>.</li>
+  <li>Same suite cannot be double-started while already queued/running.</li>
+</ul>
+
+<h2>19. Known limits</h2>
+<ul>
+  <li>OpenOMS PR path filters mean only certain PRs trigger the workflow automatically.</li>
+  <li>Branch protection is optional; without it, failing checks do not block merges.</li>
+  <li>Jenkins is not connected (dashboard Actions path is the live one).</li>
+  <li>Upstream OpenOMS may have unrelated failing checks (e.g. security tooling / missing secrets) that are outside TestNexus.</li>
+  <li>Zero-selection path is covered in unit tests; treat real PRs with care when mapping is incomplete — unmapped source still pulls critical tests.</li>
+</ul>
+
+<h2>20. Quick reference commands</h2>
+<pre># Install
+npm install && (cd dashboard && npm install)
+
+# Quality
+npm test
+npm run check
+npm run evaluate
+
+# Local brain
+npm run analyze
+npm run analyze -- --project openoms --pr 2
+npm run dashboard:sync
+
+# Control room + live Actions
+# (needs GITHUB_TOKEN with repo + workflow)
+npm run dev:all
+# open http://127.0.0.1:5173
+
+# Static demo (resume-style, no runner)
+cd dashboard && npm run build && npx vite preview --host 127.0.0.1 --port 4173</pre>
+
+<h2>21. Glossary</h2>
+<table>
+  <tr><th>Term</th><th>Meaning</th></tr>
+  <tr><td>Feature map</td><td>List of product features and the file path prefixes that belong to each</td></tr>
+  <tr><td>Test registry</td><td>Catalogue of known automated tests with ids, titles, feature links, criticality</td></tr>
+  <tr><td>Deterministic selection</td><td>Rule-based pick of tests; same input → same output</td></tr>
+  <tr><td>Critical test</td><td>Must stay covered when mapping is uncertain or the feature is critical</td></tr>
+  <tr><td>workflow_dispatch</td><td>GitHub Actions trigger that starts a workflow manually or via API</td></tr>
+  <tr><td>Grep filter</td><td>Playwright pattern (often a tag like <code>@smoke</code> or exact titles) limiting which tests run</td></tr>
+  <tr><td>Suite runner</td><td>Local Node HTTP helper that talks to GitHub using your token for the dashboard</td></tr>
+  <tr><td>Overview</td><td>First dashboard page for visitors / recruiters</td></tr>
+</table>
+
+<p class="footer-note">
+  End of guide. Source of truth for behaviour is the repository on main:
+  https://github.com/ApooravSharma01/TestNexus-AI<br />
+  Built for explaining the project end-to-end — setup, pipeline, OpenOMS integration, dashboard, and
+  how to onboard a new application.
+</p>
+
+</body>
+</html>
