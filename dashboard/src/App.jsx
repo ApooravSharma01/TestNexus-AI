@@ -8,6 +8,7 @@ import { Failures } from "./components/Failures.jsx";
 import { Header } from "./components/Header.jsx";
 import { ImpactedFeatures } from "./components/ImpactedFeatures.jsx";
 import { LoadReportButton } from "./components/LoadReportButton.jsx";
+import { Overview } from "./components/Overview.jsx";
 import { Panel } from "./components/Panel.jsx";
 import { PullRequests } from "./components/PullRequests.jsx";
 import { QualityPanel } from "./components/QualityPanel.jsx";
@@ -23,11 +24,18 @@ import { TestResults } from "./components/TestResults.jsx";
 import { capitalize, duration, estimateTimeSaved, formatDate, percent, riskTone } from "./format.js";
 import { useAutomation } from "./useAutomation.js";
 
-const TABS = ["suites", "pull-requests", "analysis"];
+const TABS = ["overview", "suites", "pull-requests", "analysis"];
 
 function currentTab() {
   const hash = window.location.hash.slice(1);
-  return TABS.includes(hash) ? hash : "suites";
+
+  if (!hash) {
+    // Replace so the address bar shows #overview without adding a history entry.
+    window.history.replaceState(null, "", "#overview");
+    return "overview";
+  }
+
+  return TABS.includes(hash) ? hash : "overview";
 }
 
 // The active tab lives in the URL hash, so reloads and shared links keep the section.
@@ -44,7 +52,12 @@ function useHashTab() {
   }, []);
 
   const select = useCallback((next) => {
-    window.location.hash = next;
+    // Always update React state. Setting the same hash again does not fire hashchange,
+    // so a click on the already-selected URL would otherwise do nothing.
+    setTab(next);
+    if (window.location.hash.slice(1) !== next) {
+      window.location.hash = next;
+    }
   }, []);
 
   return [tab, select];
@@ -271,6 +284,7 @@ export function App() {
   // A count of 0 would read as "nothing here" when the runner simply is not connected.
   const hasData = automation.connection === "online" || automation.connection === "snapshot";
   const tabs = [
+    { id: "overview", label: "Overview" },
     { id: "suites", label: "Suites", count: hasData ? automation.suites.length : undefined },
     { id: "pull-requests", label: "Pull requests", count: hasData ? automation.pullRequests.length : undefined },
     { id: "analysis", label: "Analysis" }
@@ -287,6 +301,16 @@ export function App() {
       <main className="page">
         <Tabs tabs={tabs} active={tab} onSelect={selectTab} />
 
+        {tab === "overview" && (
+          <Overview
+            onNavigate={selectTab}
+            canOpenSample={Boolean(bundled)}
+            onOpenSample={() => {
+              openSample();
+              selectTab("analysis");
+            }}
+          />
+        )}
         {tab === "suites" && <SuiteRunner automation={automation} />}
         {tab === "pull-requests" && <PullRequests automation={automation} />}
         {tab === "analysis" && (active ? (
