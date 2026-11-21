@@ -13,6 +13,7 @@ import { RunSwitcher } from "./components/RunSwitcher.jsx";
 import { RunTerminal } from "./components/RunTerminal.jsx";
 import { SelectionFunnel } from "./components/SelectionFunnel.jsx";
 import { StatCard } from "./components/StatCard.jsx";
+import { SuiteRunner } from "./components/SuiteRunner.jsx";
 import { TestResults } from "./components/TestResults.jsx";
 import { capitalize, duration, estimateTimeSaved, percent, riskTone } from "./format.js";
 
@@ -202,6 +203,7 @@ export function App() {
         </section>
 
         <QualityPanel evaluation={evaluation} runName={active.name} runMetrics={active.metrics} />
+        <SuiteRunner />
         <RunTerminal report={report} />
 
         <div className="grid-2">
