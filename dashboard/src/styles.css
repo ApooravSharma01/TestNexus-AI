@@ -1080,6 +1080,183 @@ tbody tr:hover td {
   flex-shrink: 0;
 }
 
+/* Overview (the opening page) */
+
+a.button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.overview {
+  display: grid;
+  gap: 36px;
+}
+
+.ov-hero {
+  padding: 36px 0 4px;
+  max-width: 760px;
+}
+
+.ov-hero h1 {
+  margin: 14px 0 12px;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.ov-lead {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.ov-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.ov-actions .button {
+  height: 38px;
+  padding: 0 16px;
+}
+
+.ov-heading {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.proof-card {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.proof-card:hover,
+.proof-card:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.proof-value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.proof-label {
+  font-weight: 650;
+}
+
+.proof-detail {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.proof-link {
+  margin-top: 6px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 550;
+}
+
+.ov-note {
+  margin: 12px 0 0;
+  color: var(--text-subtle);
+  font-size: 12.5px;
+}
+
+.ov-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ov-step {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.ov-step-number {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ov-step h3 {
+  margin: 12px 0 6px;
+  font-size: 15px;
+}
+
+.ov-step p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.ov-explore {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 550;
+}
+
+.ov-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 /* Empty states */
 
 .empty-state {
